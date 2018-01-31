@@ -1,0 +1,17 @@
+ADD
+TOOLBAR
+(
+   ; Trace32 Installations prior to 2014 have this toolitems set in default t32.cmm.
+   ; As we overwrite the default t32.cmm, we have to declare them manually...
+   toolitem "Source/List" "list" "Data.List"
+   toolitem "Memory Dump" "dump" "Data.dump"
+   toolitem "Register" "reg" "Register"
+   separator
+   toolitem "Watch" ":varwatch" "Var.Watch"
+   toolitem "Stack" ":varframe" "Var.Frame /l /c"
+   toolitem "Automatic Watch" ":varref" "Var.Ref"
+   separator
+   toolitem "List Breakpoints" "break" "Break.List"
+   toolitem "List Symbols" "symbols" "sYmbol.Browse"
+   separator
+)

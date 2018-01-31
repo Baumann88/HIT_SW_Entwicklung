@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Auftrage_DeuscheBahn" />
+		<Option pch_mode="2" />
+		<Option compiler="gnu_gcc_compiler_for_tricore_v346" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../result/$(PROJECT_NAME)_debug.elf" prefix_auto="0" extension_auto="0" />
+				<Option object_output="../temp/debug" />
+				<Option type="1" />
+				<Option compiler="gnu_gcc_compiler_for_tricore_v346" />
+				<Compiler>
+					<Add option="-O1" />
+				</Compiler>
+				<Linker>
+					<Add option="-T ../libs/esx3xm/esx3xm_link_debug.ld" />
+					<Add option="-Wl,-Map=../result/$(PROJECT_NAME)_debug.map" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../result/$(PROJECT_NAME).elf" prefix_auto="0" extension_auto="0" />
+				<Option object_output="../temp/release" />
+				<Option type="1" />
+				<Option compiler="gnu_gcc_compiler_for_tricore_v346" />
+				<Compiler>
+					<Add option="-Os" />
+					<Add directory="../libs/BSP/CommPort" />
+					<Add directory="../libs/BSP/CommPort/col2" />
+					<Add directory="../libs/BSP/DriveSystem" />
+					<Add directory="../libs/BSP/EEProm_manager" />
+					<Add directory="../libs/BSP/OD" />
+					<Add directory="../libs/BSP/RemoteControl" />
+					<Add directory="../libs/BSP/Safety" />
+					<Add directory="../libs/BSP/HubSystem" />
+					<Add directory="../libs/BSP/MultiIO" />
+					<Add directory="../libs/BSP/Tracking" />
+				</Compiler>
+				<Linker>
+					<Add option="-T ../libs/esx3xm/esx3xm_link_extflash.ld" />
+					<Add option="-Wl,-Map=../result/$(PROJECT_NAME).map" />
+					<Add library="..\libs\BSP\CommPort\col2\library\col2_tricore.a" />
+					<Add library="..\libs\esx3xm\libesx3xm.a" />
+					<Add library="..\libs\eb02\libeb02.a" />
+					<Add library="..\libs\eb05\libeb05.a" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="tricore-objcopy -O ihex  ..\result\$(PROJECT_NAME).elf ..\result\interim_result.hex" />
+					<Add after="..\bat\signature\STWFlashSignatureGenerator.exe ..\result\interim_result.hex ..\result\$(PROJECT_NAME).hex" />
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-mwarnprqa=off" />
+			<Add option="-mcpu=TC1796" />
+			<Add option="-Wstrict-prototypes" />
+			<Add option="-Wall" />
+			<Add option="-fno-common" />
+			<Add option="-mno-use-round2zero" />
+			<Add option="-maligned-data-sections" />
+			<Add option="-fno-builtin-cabs" />
+			<Add option="-fno-builtin-cabsf" />
+			<Add option="-W" />
+			<Add option="-g2" />
+			<Add option="-x c" />
+			<Add directory="../src" />
+			<Add directory="../libs/esx3xm" />
+			<Add directory="../libs/eb02" />
+			<Add directory="../libs/eb05" />
+		</Compiler>
+		<Linker>
+			<Add option="-mcpu=TC1796" />
+			<Add option="-Wl,--relax-24rel" />
+			<Add option="-Wl,--extmap=a" />
+			<Add option="-Wl,--warn-orphan" />
+			<Add option="-nocrt0" />
+			<Add library="..\libs\esx3xm\libesx3xm.a" />
+			<Add library="..\libs\eb02\libeb02.a" />
+			<Add library="..\libs\eb05\libeb05.a" />
+			<Add directory="../libs/esx3xm" />
+			<Add directory="../libs/eb02" />
+			<Add directory="../libs/eb05" />
+		</Linker>
+		<Unit filename="../libs/BSP/CommPort/CANopenComm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/CommPort/CANopenComm.h" />
+		<Unit filename="../libs/BSP/CommPort/CANopenDeviceConfig.h" />
+		<Unit filename="../libs/BSP/CommPort/CommInterface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/CommPort/CommInterface.h" />
+		<Unit filename="../libs/BSP/CommPort/PDOConfig.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/CommPort/col2/col2.h" />
+		<Unit filename="../libs/BSP/CommPort/col2/col2_base.h" />
+		<Unit filename="../libs/BSP/CommPort/col2/col2_eb10.h" />
+		<Unit filename="../libs/BSP/CommPort/col2/col2_eb10_sl.h" />
+		<Unit filename="../libs/BSP/CommPort/col2/col2_sl.h" />
+		<Unit filename="../libs/BSP/CommPort/col2/col2_types.h" />
+		<Unit filename="../libs/BSP/CommPort/col2/templates/col2_config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/EEProm_manager/eep_Manage.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/EEProm_manager/eep_Manage.h" />
+		<Unit filename="../libs/BSP/EEProm_manager/eep_memmap.h" />
+		<Unit filename="../libs/BSP/HubSystem/HubSystem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/HubSystem/HubSystem.h" />
+		<Unit filename="../libs/BSP/HubSystem/HubSystemControl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/HubSystem/HubSystemData.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/HubSystem/HubSystemData.h" />
+		<Unit filename="../libs/BSP/HubSystem/HubSystemInterface.h" />
+		<Unit filename="../libs/BSP/MultiIO/MultiIO.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/MultiIO/MultiIO.h" />
+		<Unit filename="../libs/BSP/MultiIO/MultiIOConfig.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/MultiIO/MultiIOInterface.h" />
+		<Unit filename="../libs/BSP/OD/DeviceOD.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/OD/DeviceOD.h" />
+		<Unit filename="../libs/BSP/OD/ODContent.h" />
+		<Unit filename="../libs/BSP/OD/ODInfo.h" />
+		<Unit filename="../libs/BSP/RemoteControl/RemoteControl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/RemoteControl/RemoteControl.h" />
+		<Unit filename="../libs/BSP/RemoteControl/RemoteControlData.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/RemoteControl/RemoteControlData.h" />
+		<Unit filename="../libs/BSP/RemoteControl/RemoteControlDisplay.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/RemoteControl/RemoteControlDisplayErrorText.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/RemoteControl/RemoteControlDisplayErrorText.h" />
+		<Unit filename="../libs/BSP/RemoteControl/RemoteControlInterface.h" />
+		<Unit filename="../libs/BSP/Safety/Safety.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/Safety/Safety.h" />
+		<Unit filename="../libs/BSP/Safety/SafetyData.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/Safety/SafetyData.h" />
+		<Unit filename="../libs/BSP/Safety/SafetyHubSys.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/Safety/SafetyHubSysData.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/Safety/SafetyHubSysData.h" />
+		<Unit filename="../libs/BSP/Safety/SafetyInterface.h" />
+		<Unit filename="../libs/BSP/Safety/SafetyNormal.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/Safety/SafetyPLC.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/Safety/SafetyPLCData.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../libs/BSP/Safety/SafetyPLCData.h" />
+		<Unit filename="../libs/eb02/x02_in.h" />
+		<Unit filename="../libs/eb02/x02_lib.h" />
+		<Unit filename="../libs/eb02/x02_lib_string.h" />
+		<Unit filename="../libs/eb02/x02_out.h" />
+		<Unit filename="../libs/eb02/x02_sys.h" />
+		<Unit filename="../libs/eb05/x05_in.h" />
+		<Unit filename="../libs/eb05/x05_lib.h" />
+		<Unit filename="../libs/eb05/x05_lib_string.h" />
+		<Unit filename="../libs/eb05/x05_out.h" />
+		<Unit filename="../libs/eb05/x05_sys.h" />
+		<Unit filename="../libs/esx3xm/intrinsics.h" />
+		<Unit filename="../libs/esx3xm/memtypes.h" />
+		<Unit filename="../libs/esx3xm/stdtypes.h" />
+		<Unit filename="../libs/esx3xm/stwerrors.h" />
+		<Unit filename="../libs/esx3xm/stwtypes.h" />
+		<Unit filename="../libs/esx3xm/x_can.h" />
+		<Unit filename="../libs/esx3xm/x_can_types.h" />
+		<Unit filename="../libs/esx3xm/x_eb.h" />
+		<Unit filename="../libs/esx3xm/x_eep.h" />
+		<Unit filename="../libs/esx3xm/x_eep_types.h" />
+		<Unit filename="../libs/esx3xm/x_err.h" />
+		<Unit filename="../libs/esx3xm/x_err_defines.h" />
+		<Unit filename="../libs/esx3xm/x_err_types.h" />
+		<Unit filename="../libs/esx3xm/x_esx3xm.h" />
+		<Unit filename="../libs/esx3xm/x_fl.h" />
+		<Unit filename="../libs/esx3xm/x_fl_types.h" />
+		<Unit filename="../libs/esx3xm/x_in.h" />
+		<Unit filename="../libs/esx3xm/x_lib.h" />
+		<Unit filename="../libs/esx3xm/x_mpu.h" />
+		<Unit filename="../libs/esx3xm/x_mpu_types.h" />
+		<Unit filename="../libs/esx3xm/x_os.h" />
+		<Unit filename="../libs/esx3xm/x_os_mbox.h" />
+		<Unit filename="../libs/esx3xm/x_os_mutex.h" />
+		<Unit filename="../libs/esx3xm/x_os_sema.h" />
+		<Unit filename="../libs/esx3xm/x_os_signal.h" />
+		<Unit filename="../libs/esx3xm/x_os_types.h" />
+		<Unit filename="../libs/esx3xm/x_out.h" />
+		<Unit filename="../libs/esx3xm/x_out_relay.h" />
+		<Unit filename="../libs/esx3xm/x_ser.h" />
+		<Unit filename="../libs/esx3xm/x_ser_types.h" />
+		<Unit filename="../libs/esx3xm/x_ssv.h" />
+		<Unit filename="../libs/esx3xm/x_stdtypes.h" />
+		<Unit filename="../libs/esx3xm/x_sys.h" />
+		<Unit filename="../libs/esx3xm/x_sys_adc.h" />
+		<Unit filename="../libs/esx3xm/x_tim.h" />
+		<Unit filename="../libs/esx3xm/x_uti.h" />
+		<Unit filename="../src/AppConfig.h" />
+		<Unit filename="../src/MESConfig.h" />
+		<Unit filename="../src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

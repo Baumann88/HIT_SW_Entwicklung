@@ -1,0 +1,282 @@
+Readme file for the Peer-to-Peer connection via TC3 GPRS modem
+
+This file contains
+
+  1 Overview / Whom should this manual help?
+  
+  2 Linux tools we should use for communication
+	2.1 Point-to-Point Protocol Daemon (pppd)
+	2.2 Chat: Talking to the modem
+   
+  3 Getting the communication configuration step by step
+	3.1 Setup rc.conf for GPRS connection
+	3.2 Setting up modem to Address Resolution (DNS)
+	3.3 Authentication
+	
+  4 Getting a GPRS connection step by step   
+	4.1 Setting up PPP connection manually
+	4.2 Debugging
+	
+  5. Credits
+	
+	
+============================================================================
+
+1. Overview / Whom should this manual help?
+--------------------------------------------
+
+This manual is written by the STW development to make other developers 
+more familiar with the TC3 GPRS (General Packet Radio Service) 
+communication environment. 
+
+Our Motivation for the TC3 - as a teleservice ECU - giving a GPRS Interface is:
+
+	1. User access wireless from whole over the world
+	2. TC3 communication wireless to server (wireless)
+
+
+The next chapter gives an explaination to the Open Source tools which we 
+need to established GPRS communication between TC3 and ISP (Internet Service
+Provider). A short overview will help to understand how the tools act with
+each other. More over a first walking thru of the Linux TC3 environment the
+configuration setup, i.e. configuration scripts, will be explained. A step 
+by step introduction in setting up a Point-to-Point connection via the GPRS 
+modem is coming up in the second last chapter. Finally some of the usefully
+scripts will be explained.
+
+
+2. Linux tools we should use for communication
+----------------------------------------------
+
+The following image should give a short overview of the software we need to
+established a communication via GPRS.
+  
+		 ___________________
+		|____ TC3 System ___|
+		|					     |
+		|	Application	  /\ |
+		|----------------|| |
+		|		pppd	     \/ |
+		|----------------/\ |	       _ _ _ _ _ _ _ _ 
+		|		chat	     || |      _ /                 \_	
+		|----------------\/ |    /		    Internet        \	        __________________
+		|	HW modem		     |   |					            |		    |					     |
+		|___________________| <------ Communication via GPRS ------> |       ISP        | 
+                              |						         |		    |__________________|
+                               \_					       _/
+                                  \_ _ _ _ _ _ _ _ _ /
+ 
+
+  2.1 Point-to-Point Protocol Daemon (pppd)
+  
+  PPP is a mechanism for creating and running IP (Internet Protocol) and 
+  other network protocols over a serial link. In our case we try to get 
+  a link from a serial modem via GPRS (General Packet Radio Service) in 
+  a GSM (Global Service for Mobile communication) network to a ISP (e.g.
+  to allow server / internet / other networks access). 
+  
+  Getting information you need about the PPP server - in our case the 
+  ISP. Before you can establish a PPP connection with a server, you 
+  need to obtain the following information (from ISP you get your Data
+  SIM-Card for the TC3):
+  
+	- SIM-Card information's
+		. PIN e.g. a 4 character code
+		. SCA e.g. same like a mobile phone number
+		. APN e.g. for t-mobile -> internet.t-d1.de
+	- Does the server require the user of PAP/CHAP? If this is the case
+	  you need to know the "id" and "secret" you are to use to connecting.
+	  There are probably the user name and password of the ISP.
+	  
+  To handle the tremendous requirements, which are given by establishing 
+  a link to a ISP, we use a lot of scripts for configuration (modem, 
+  communication parameters, authentication (PAP/CHAP), etc.) and many 
+  other for communication. 
+  
+  Some of the following scripts are described in the next chapters:
+	- Configuration scripts
+		. /etc/resolv.conf
+		. /etc/rc.d/rc.conf
+		. /etc/host.conf
+		. /etc/ppp/options			# the options pppd uses for all connections
+		. /etc/ppp/gprs-options		# the options pppd uses for GPRS connections
+		
+	- Communication scipts
+		. /usr/sbin/pppd			# the PPP binary itself
+		. /etc/ppp/gprs-connect		# the dialer / connection script
+		. /etc/ppp/gprs-disconnect	# the disconnection script
+			
+	
+  2.2 Chat: Talking to the modem
+  
+  The chat program defines a conversational exchange between the computer (TC3) 
+  and the modem. Its primary purpose is to establish the connection between
+  the Point-to-Point Daemon (pppd) and the remote's pppd process (in our case
+  the pppd of the ISP).
+ 
+
+3 Getting the communication configuration step by step
+
+This chapter gives a explanation about the files we need to configure to 
+establish a GPRS PPP connection to your ISP. 
+	
+	Start: The TC3 is turned off!
+	1. Put the SIM-Card out of the TC3 SIM-Card Slot
+	2. Make sure you have all the information you needed for your SIM-Card 
+	   (see chapter 2.1 of this document)
+	3. Turn the TC3 on
+	
+Remember: 
+	For the next steps it will estimated you have already configure 
+	your TC3 in that way you can communicate with via Ethernet or Serial!
+	
+Short introduction in this script you have to change by your own,
+if you want to connect firs via Ethernet:
+
+	- Script /etc/rc.d/rc.conf
+		. Have a look on the following settings:
+			1. export ETH0_CONF="DHCP"	# three options STATIC, UBOOT, DHCP 
+			   for more information read the script
+			2. Settings for eth0 like Domain and DNS these two parameters 
+			   will be later generated into /etc/resolv.conf
+
+	3.1 Setup rc.conf for GPRS connection
+	
+	Open script /etc/rc.d/rc.conf with the editor (e.g ee or vi). Search now to
+	"GSM Settings". Set in the SIM-Card parameters you get from your ISP 
+	(chapter 2.1), save and exit file.  
+	
+	3.2 Setting up modem to Address Resolution (DNS)
+	
+	Translating (resolving) machine (and domain) names into the numbers actually
+	used the Internet is the buisiness of machines that offer the Domain Name Service.
+	
+	When you make a PPP connection, you need to tell your Linux machine where 
+	it can get host name to IP number (address resolution) information so that
+	you can use the machine names but your computer can translate these to the 
+	IP number it needs to do its work.
+	
+	The best way is to set up Linux so that it knows where to go to get this name
+	to number information - automatically. This service is provided by the Domain
+	Name Server (DNS) system. All that is neccessary - in our case - is to set 
+	"usepeerdns" (for more information read the pppd manual) to the 
+	/etc/ppp/gprs-options, if it's not. That means that the TC3 ask the peer for 
+	two DNS server addresses. The pppd will create the resolv.conf file containing
+	one or two nameserver lines with the addresses supplied by the peer.
+		
+	3.3 Authentication
+	
+	In addition your ISP needs an authentification (PAP/CHAP) you have to include
+	the following lines to /etc/gprs-connection.
+	
+		- user "USERNAME"
+		- passord "PASSWORD"
+		
+	For more information about the authentication mechanism under linux consult 
+	the manual, your ISP or the Internet :)
+	
+	
+4 Getting a GPRS connection step by step  
+
+This chapter gives a explanation to establish a GPRS PPP connection to your ISP
+step by step. 
+	
+	Start: The TC3 is turned of!
+	1. Put the SIM-Card into the TC3 SIM-Card Slot
+	2. Switch it on
+	
+We need now the following applications:
+	- /etc/ppp/ppp-start	# connection script which triggers the gprs-connect script
+	- /etc/ppp/ppp-stop		# disconnect script which triggers the gprs-disconnect script
+	
+	4.1 Setting up PPP connection manually
+	
+	First: Try ppp-start to connect to your ISP. 
+	
+	Second: Check connection with command: ifconfig
+	
+	- Connection established when a "ppp0" link encapsulate the Point-to-Point Protocol
+		- e.g. iter addr: 80.187.10.158	... IP number of your end of link
+		- e.g. P-t-P: 10.0.0.1			... Server IP number
+	
+	- Connection not established when no "ppp0" link is on top
+		- e.g. iter addr: 0.0.0.0
+		- e.g. P-t-P: 	  0.0.0.0
+		
+	Third: You should be able to see a route to the remote host (and beyond). 
+		   To do this, issue the command: route
+		   The "Kernel IP routing table" will be showen e.g.
+
+		   Destination	Gateway		Genmask			Flags	Metric	Ref	Use	Iface
+		   10.0.0.1		*			255.255.255.255	UH		0		0	0	ppp0
+		   .
+		   .
+		   default 		10.0.0.1	0.0.0.0			UG		0		0	0	ppp0
+		   
+	Note: We have two entries pointing to our ppp interface.
+	
+		1. Host route, (indicates by the H flag) and that allows us to see the
+		   host to which we are connected to - but not further.
+		2. This is the default route, established by giving the pppd the option 
+		   "defaultroute" - in our case set in gprs-options. This is the route
+		   that tells your TC3 (and may your Linuc PC too) to send  any packet 
+		   NOT destined for local Ethernet(s) - to which we specified 
+		   "networkroutes" - to the PPP Server itself. The PPP Server then is 
+		   responsible for routing our packets out onto the Internet and routing
+		   the return packets back to us.
+		   
+		   
+	Note: If you do not see the routing table with two entries, someting is wrong!
+		   
+		   YOU CAN ONLY HAVE ONE DEFAULT ROUTE!
+		   
+		   
+	Fourth: Test link by "pinging"any URL or IP e.g. URL: www.fh-kempten.de
+	
+			--> If you get something like that ...
+			
+			PING www.fh-kempten.de (***.***.***.***) ...
+			64 bytes from ***.***.***.***: icmp_seq=1 ttl=49 time=927ms
+			.
+			.
+			.
+			--- www.fh-kempten.de ping statistic ---
+			x packets transmitted x received, 0 packets lost, time 
+			rt min/avg/max/mdev = 284.007/514.323/927.490/292.795 ms
+			
+			--> ... it works ;)
+			
+	Fifth:	Disconnect the PPP connection by executing: ppp-stop
+			
+	4.2 Debugging
+	
+	Check if modem works by using a terminal with AT-commandos, e.g.
+	
+	picocom -b 460800 /dev/ttyPSC3
+	
+	... terminal is comming up
+	
+	Type "AT" and return.
+	A "OK" should be returned by the modem.
+	Communication with the TC3 modem established -> modem works!
+	
+	
+	Debugging during the ppp-start establish the PPP connection, using
+	the "tail" program (more information in linux).
+	
+	tail -f /var/log/messages
+
+	
+5. Credits
+----------
+
+  (?) More credits, of course!?
+
+  Olaf Kirch & Terry Dawson (Liux Network Administration's Guide, 2nd Edition)
+  http://tldp.org/index.html (Linux Documentation Project)
+  Martin Gräfe (C und Linux)
+  George Coulouris, Jean Dollimore & Tim Kindberg (Distributed Systems Concept & Design)
+  
+  
+
+

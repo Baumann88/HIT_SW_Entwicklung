@@ -1,0 +1,57 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:    esx32_specific/post_init.cmm       
+;  Version: 02.05.2013, Baldauf                         Copyrights (c) 2013, STW
+;
+;  Description: Display "TAP in" Button dependant on loaded elf-file
+;
+;  Target:      ESX-3XL/ESX-3XM
+;-----------------------------------------------------------------------------------------------------------------------
+
+LOCAL   &ESX32_ExtVer
+
+; check whether the stw_rtos extension shall be loaded
+; x_os_init function will be present in executable if STW RTOS (or the safety layer) is being used
+
+&ESX32_ExtVer="V0.02r0"
+print ""
+print ""
+print "ESX-32 Debug Extension (Version: &ESX32_ExtVer)"
+
+
+if Y.EXIST(x_os_init)
+(
+   ; load stw_rtos extension if available
+   if (os.file(./esx32_specific/stw_rtos/stw_rtos.t32))
+   (
+      print "Loading STW RTOS extension for ESX-32 ECUs. Use ""task.info"" for additional information."
+      task.config ./esx32_specific/stw_rtos/stw_rtos.t32
+   )
+   
+   ; Reconfiguration of MPU is only needed if safety layer is being used, the device is TC1796 and the program doesn't run in RAM
+   if ((V.VALUE(&_start)&0xF000000)!=0x4000000)
+   (
+      if Y.EXIST(xs_sys_init)&&("&cpu_name"=="TC1796")
+      (
+         print "ESX-32 Safety Layer application detected. Acitvate TAP-IN button."
+         if (os.file(./esx32_specific/stw_rtos.cmm))
+         (
+            ;Add "TAP in" button to toolbar
+            menu.rp
+            (
+               add
+               toolbar
+               (
+                  separator
+                  toolitem "Tap into Target (Break running program and reconfigure MPU for FLASH debugging)" "TI,G" "do ./esx32_specific/stw_rtos.cmm"
+                  separator
+               )
+            )      
+         )
+      )
+   )
+)
+print ""
+print ""
+
+
+;-----------------------------------------------------------------------------------------------------------------------   

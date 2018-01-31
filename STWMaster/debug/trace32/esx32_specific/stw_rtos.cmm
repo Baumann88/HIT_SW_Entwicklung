@@ -1,0 +1,86 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:    stw_rtos.cmm       
+;  Version: 02.05.2013, Baldauf                         Copyrights (c) 2013, STW
+;
+;  Description: reconfigure MPU from "Memory protection" to "Flash Debugging"
+;
+;  Note:        The ECU must be in running mode and all MPU initialization of the system have to be done before this
+;               script shall be executed.
+;
+;  Target:      projects with TC1796 CPUs
+;-----------------------------------------------------------------------------------------------------------------------
+
+if (run())
+(
+   ; redo to stop/check until we are in main level
+NextTry:
+   break
+   if ((register(icr)&0xFF)!=0)
+   (
+      go
+      wait 2.ms
+      goto NextTry
+   )
+   
+   ; Disable MPU protection
+   data.set 0xF7E1FE14 %LONG 0
+   data.set 0xF7E1C000 %LONG 0x0
+   data.set 0xF7E1C004 %LONG 0xE0000000
+   data.set 0xF7E1C400 %LONG 0x0
+   data.set 0xF7E1C404 %LONG 0xE0000000
+   data.set 0xF7E1E000 %LONG 0xC0C0C0C0
+   data.set 0xF7E1E080 %LONG 0xC0C0C0C0
+   data.set 0xF7E1E200 %LONG 0xC0C0C0C0
+   data.set 0xF7E1E280 %LONG 0xC0C0C0C0
+   
+   &icr_save=register(icr)
+   &icr=&icr_save&0xFFFFFEFF
+   register.set icr &icr
+   
+   &A10=register(A10) 
+   register.set A10 (MEM_EXT_RES_START+0x100)
+
+   var.call xbs_eb_interrupt_deinstall_safety_wrapper()
+   &reg=register(psw)
+   &reg=&reg&0xFFFFC3FF
+   &reg=&reg|0x00000800
+   register.set psw &reg
+   go.up
+   register.swap
+
+
+   var.call xbs_eb_timer_deinstall_safety_wrapper()
+   &reg=register(psw)
+   &reg=&reg&0xFFFFC3FF
+   &reg=&reg|0x00000800
+   register.set psw &reg
+   go.up
+   register.swap
+
+   
+   var.call xb_os_disable_memory_protection()
+   &reg=register(psw)
+   &reg=&reg&0xFFFFC3FF
+   &reg=&reg|0x00000800
+   register.set psw &reg   
+   go.up
+   register.swap
+
+
+   var.call xb_dp_disable_memory_protection()
+   &reg=register(psw)
+   &reg=&reg&0xFFFFC3FF
+   &reg=&reg|0x00000800
+   register.set psw &reg   
+   go.up
+   register.swap
+
+   register.set A10 &A10
+   
+   register.set icr &icr_save
+   
+)
+else
+(
+   DIALOG.MESSAGE "Program needs to run beyound intialization phase before we can TAP in!" 
+)

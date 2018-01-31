@@ -1,0 +1,43 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:    ldhexcfg.dlg       
+;  Version: 21.07.2015, Baldauf                         Copyrights (c) 2013, STW
+;
+;  Description: Dialog to define file signed HEX file alternative
+;
+;  Target:      TriCore generic
+;-----------------------------------------------------------------------------------------------------------------------
+
+HEADER "Change Load Configuration"
+POS 1. 0.5 30.
+TEXT "With this dialog, you can choose whether"
+TEXT "to load a HEX or ELF file to the target."
+POS 1. 2.5 15. 4.
+BOX "File:"
+POS 3. 3.5 10. 1.
+loadfile.elf:  CHOOSEBOX   "ELF file"
+(
+   &LoadSelection="LOAD ELF FILE"
+)
+loadfile.hex:  CHOOSEBOX   "HEX file" 
+(
+   &LoadSelection="LOAD HEX FILE"
+)
+
+
+POS 1. 6.5 30.
+cbDontWarn: CHECKBOX "Remember my decision for later reloads" ""
+
+
+POS 1. 8. 10.
+DEFBUTTON "OK"
+(
+   IF DIALOG.BOOLEAN(loadfile.elf)
+      &LoadSelection="LOAD ELF FILE"
+   IF DIALOG.BOOLEAN(loadfile.hex)
+      &LoadSelection="LOAD HEX FILE"
+   IF DIALOG.BOOLEAN(cbDontWarn)
+      &DontNotify="SUPPRESS NOTIFICATION"
+   ELSE
+      &DontNotify=""   
+   CONT
+)

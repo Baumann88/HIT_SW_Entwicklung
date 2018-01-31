@@ -1,0 +1,54 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:    ldhex.dlg       
+;  Version: 21.07.2015, Baldauf                         Copyrights (c) 2013, STW
+;
+;  Description: Dialog to define file signed HEX file alternative
+;
+;  Target:      TriCore generic
+;-----------------------------------------------------------------------------------------------------------------------
+
+HEADER "Signed Hex File Selection"
+POS 5. 0. 80.
+TEXT "This dialog will choose a HEX file that can be loaded instead of an ELF file."
+POS 1. 1. 80.
+LINE ""
+POS 3. 2. 80.
+LTEXT "Note:"
+POS 10. 2. 80.
+TEXT "An ELF file is needed nevertheless to load debug symbols."
+POS 10. 3. 80.
+TEXT "Ensure that those two files result from the same build process."
+POS 1. 4. 80.
+LINE ""
+POS 1. 5. 80.
+TEXT "ELF Filename:"
+ElfFileBox: EDIT "" ""
+
+POS 1. 7.
+TEXT "HEX Filename:"   
+HexFileBox: EDIT "" ""
+
+POS 1. 10. 15.
+DEFBUTTON "SELECT HEX FILE"
+(
+   &Path = OS.FILE.PATH("&ElfFile")
+   DIALOG.FILE "&Path\*.hex"
+   ENTRY %line &HexFile
+   DIALOG.SET HexFileBox "&HexFile"
+)
+TEXT ""
+
+POS 20. 10. 10.
+DEFBUTTON "SAVE"
+(
+   &LoadFile=DIALOG.STRING(HexFileBox)
+   if (OS.FILE(&LoadFile)!=(0==0))
+   (
+      DIALOG.OK "Cannot find &LoadFile"
+      ; CB: CONT doesn't seem to work in if/else. We fix it with goto...
+      goto Skip
+   )
+
+   CONT
+Skip:
+)

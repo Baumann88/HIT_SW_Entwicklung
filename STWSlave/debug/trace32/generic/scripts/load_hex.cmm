@@ -1,0 +1,139 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:    load_hex.cmm       
+;  Version: 21.07.2015, Baldauf                         Copyrights (c) 2013, STW
+;
+;  Description: Choose HEX - File for loading and load symbol table of ELF file for debugging
+;
+;  Target:      TriCore generic
+;-----------------------------------------------------------------------------------------------------------------------
+
+ENTRY &Mode
+LOCAL &HexFile
+LOCAL &DontNotify 
+LOCAL &LoadSelection
+
+if ("&Mode"=="Select")
+(
+   gosub SelectHexFile
+)
+if ("&Mode"=="Load")
+(
+   gosub LoadHexFile
+)
+enddo
+
+
+;--------------------------------------------------------------------------------------------------------------------
+; Open selection dialog for signed HEX File
+;--------------------------------------------------------------------------------------------------------------------
+SelectHexFile:
+
+&HexFile=""
+
+if (OS.FILE(.\loadfile.cfg))
+(
+   OPEN  #1 loadfile.cfg      /Read
+   READ  #1 %line  &HexFile
+   READ  #1 %line  &DontNotify
+   READ  #1 %line  &LoadSelection
+   CLOSE #1
+)
+
+
+if (&RamTarget==(0==0))
+(
+   DIALOG.OK "RAM Target is currently active. Cannot load HEX file!"
+)
+else
+(
+   DIALOG.view &ScriptPath\scripts\ldhexselect.dlg
+   DIALOG.Set HexFileBox "&HexFile"
+   DIALOG.Set ElfFileBox "&ElfFile"
+   DIALOG.DISABLE ElfFileBox
+   STOP
+   &HexFile=DIALOG.STRING(HexFileBox)
+   DIALOG.END
+   
+   OPEN  #1 loadfile.cfg      /CREATE
+   WRITE #1 "&HexFile"
+   WRITE #1 "&DontNotify"
+   WRITE #1 "&LoadSelection"
+   CLOSE #1
+)
+   
+return
+
+
+
+;--------------------------------------------------------------------------------------------------------------------
+; Load previously selected signed HEX File
+;--------------------------------------------------------------------------------------------------------------------
+LoadHexFile:
+
+if (OS.FILE(.\loadfile.cfg))
+(
+   OPEN  #1 loadfile.cfg      /Read
+   READ  #1 %line  &HexFile
+   READ  #1 %line  &DontNotify
+   READ  #1 %line  &LoadSelection
+   CLOSE #1
+
+   ; Suppress notification if no HEX file is selected
+   if (("&HexFile"!=""))
+   (
+      if (OS.FILE("&HexFile"))
+      (      
+         if ("&DontNotify"!="SUPPRESS NOTIFICATION")
+         (
+            if (OS.FILE("&HexFile"))
+            (
+               DIALOG.view &ScriptPath\scripts\ldhexload.dlg
+               DIALOG.Set HexFileBox "&HexFile"
+               DIALOG.Set ElfFileBox "&ElfFile"
+               DIALOG.DISABLE ElfFileBox
+               DIALOG.DISABLE HexFileBox
+               STOP
+               IF (DIALOG.BOOLEAN(cbDontWarn))
+                  &DontNotify="SUPPRESS NOTIFICATION"
+               ELSE
+                  &DontNotify=""
+               DIALOG.END
+
+               OPEN  #1 loadfile.cfg      /CREATE
+               WRITE #1 "&HexFile"
+               WRITE #1 "&DontNotify"
+               WRITE #1 "&LoadSelection"
+               CLOSE #1
+            )
+         )
+      )
+      else
+      (
+         ; invalid HEX file - load elf file
+         print "Cannot find HEX - File. Load ELF file instead... "
+         &LoadSelection="LOAD ELF FILE"
+      )
+   )
+   else
+   (
+      print "No HEX file selected. Loading ELF file... "
+      &LoadSelection="LOAD ELF FILE"
+   )
+   
+
+
+   if ("&LoadSelection"=="LOAD HEX FILE")
+   (
+      print "Loading progam data from &HexFile"
+      print "Loading symbol data from &ElfFile"
+      data.load.intelhex &HexFile /VERIFY
+      data.load.elf &ElfFile /GNU /NOCODE   
+   )
+   else
+   (
+      print "Loading program and symbol data from &ElfFile"
+      data.load.elf &ElfFile /GNU /VERIFY   
+   )
+
+)
+return

@@ -1,0 +1,688 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:    flash_init.cmm       
+;  Version: 07.09.2007, Herb                            Copyrights (c) 2007, STW
+;
+;  Description: initialize onchip and external flash memory in cached and uncached areas
+;               address space of external bus interface /CS0 and /CS2 will be checked and initialized
+;
+;  Note:        global variable cpu_name must be set by caller
+;
+;  Target:      projects with TC1796, TC1797, TC1798 and TC1793 CPUs
+;-----------------------------------------------------------------------------------------------------------------------
+
+   &int_flash_size=0
+   &ext_flash_size=0
+
+   flash.reset                                   ; reset flash definition
+   map.nodenyaccess                              ; unlock all address areas
+   LOCAL &CS0_Addr
+   LOCAL &CS1_Addr
+   LOCAL &CS2_Addr
+   LOCAL &CS3_Addr
+   
+   if (OS.FILE(&EcuExtPath\ext_mem_cfg.cmm))
+   (
+      ; Get EBU configuration from configuration script. If no external memory is used, at least CS0_Addr must be set to zero.
+      do &EcuExtPath\ext_mem_cfg.cmm
+      ENTRY &CS0_Addr &CS1_Addr &CS2_Addr &CS3_Addr
+   )
+
+   
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; check, if this is a TC1796 CPU -> init all flash areas
+   ;--------------------------------------------------------------------------------------------------------------------
+
+   if ("&cpu_name"=="TC1796")
+   (
+      gosub init_int_flash_TC1796
+      entry &int_flash_size
+      
+      if (("&CS0_Addr"=="")&&("&CS1_Addr"=="")&&("&CS2_Addr"=="")&&("&CS3_Addr"==""))
+      (
+         ; No ecu specific configuration - do default detection
+         gosub init_ext_flash_TC1796 0xA1000000 0 20.                  ; try to detect external flash device at /CS0 address space, unit number 20
+         entry &ext_flash0_size
+         gosub init_ext_flash_TC1796 0xA1000000+&ext_flash0_size 2 22. ; try to detect second external flash device at /CS2, unit number 22
+         entry &ext_flash1_size
+         &ext_flash_size=&ext_flash0_size+&ext_flash1_size
+      )
+      else
+      (
+         gosub detect_ext_flash_cfg_TC1796
+      )
+   )
+
+   
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; check, if this is a TC1797 CPU -> init all flash areas
+   ;--------------------------------------------------------------------------------------------------------------------
+
+   if ("&cpu_name"=="TC1797")
+   (
+      gosub init_int_flash_TC1797
+      entry &int_flash_size
+      
+      if (("&CS0_Addr"=="")&&("&CS1_Addr"=="")&&("&CS2_Addr"=="")&&("&CS3_Addr"==""))
+      (      
+         gosub init_ext_flash_TC1797 0xA1000000 0 20.                  ; try to detect external flash device at /CS0 address space, unit number 20
+         entry &ext_flash0_size
+         gosub init_ext_flash_TC1797 0xA1000000+&ext_flash0_size 2 22. ; try to detect second external flash device at /CS2, unit number 22
+         entry &ext_flash1_size
+         &ext_flash_size=&ext_flash0_size+&ext_flash1_size
+      )
+      else
+      (
+         gosub detect_ext_flash_cfg_TC1797
+      )
+   )
+
+
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; check, if this is a TC1793 or TC1798 CPU -> init all flash areas
+   ;--------------------------------------------------------------------------------------------------------------------
+
+   if (("&cpu_name"=="TC1793")||("&cpu_name"=="TC1798"))
+   (
+      gosub init_int_flash_TC1798
+      entry &int_flash_size
+
+      if (("&CS0_Addr"=="")&&("&CS1_Addr"=="")&&("&CS2_Addr"=="")&&("&CS3_Addr"==""))
+      (            
+         gosub init_ext_flash_TC1797 0xA3000000 0 20.                  ; try to detect external flash device at /CS0 address space, unit number 20
+         entry &ext_flash0_size
+         gosub init_ext_flash_TC1797 0xA3000000+&ext_flash0_size 2 22. ; try to detect second external flash device at /CS2, unit number 22
+         entry &ext_flash1_size
+         &ext_flash_size=&ext_flash0_size+&ext_flash1_size
+      )
+      else
+      (
+         gosub detect_ext_flash_cfg_TC1797         
+      )
+   )
+   
+   ; check for target specific flash protection
+   if (OS.FILE(&EcuExtPath\mem_prot_cfg.cmm))
+   (
+      do &EcuExtPath\mem_prot_cfg.cmm
+   )
+   else
+   (
+      ; mask out all boot loader relevant address ranges and remove their flash definition
+      ; to prevent them from being erased from the debuggers "flash.erase all" command
+      
+      ; FLASH.CHANGETYPE is not supported by T32 Builds < 2013
+      if (&T32BuildYear>2012)
+      (
+         FLASH.CHANGETYPE 0xA0000000--0xA001FFFF NOP     
+      )
+      else
+      (
+         map.DENYACCESS 0xA0000000--0xA001FFFF
+         flash.delete   0xA0000000--0xA001FFFF   
+      )
+
+      ; Set default extern flash protection
+      if (&ext_flash_size>0)
+      (
+         if (("&cpu_name"=="TC1796")||("&cpu_name"=="TC1797"))
+         (   
+            ; FLASH.CHANGETYPE is not supported by T32 Builds < 2013
+            if (&T32BuildYear>2012)
+            (
+               FLASH.CHANGETYPE 0xA1000000--0xA101FFFF NOP
+            )
+            else
+            (
+               map.DENYACCESS 0xA1000000--0xA101FFFF
+               flash.delete   0xA1000000--0xA101FFFF
+            )
+         )
+
+         if (("&cpu_name"=="TC1793")||("&cpu_name"=="TC1798"))
+         (  
+            ; FLASH.CHANGETYPE is not supported by T32 Builds < 2013
+            if (&T32BuildYear>2012)
+            (
+               FLASH.CHANGETYPE 0xA3000000--0xA301FFFF NOP
+            )
+            else
+            (
+               map.DENYACCESS 0xA3000000--0xA301FFFF
+               flash.delete   0xA3000000--0xA301FFFF
+            )
+         )
+      )
+   )
+
+   ; the command Flash.CreateAlias is only supported by Trace32 Software 2010 and newer
+   ; therefore this command must be skipped on an older Trace32 debugger environment
+   on error goto no_flash_create_alias
+
+   ; create alias for cached address space
+   FLASH.CreateAlias 0x80000000--0x8FFFFFFF 0xA0000000   
+
+flash_init_end:
+   on error        ; remove error handler
+   enddo &int_flash_size &ext_flash_size
+
+no_flash_create_alias:
+   print "WARNING: Can't create uncached memory areas, update your Trace32 system (year >=2010)"
+   goto flash_init_end
+
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; TC1796: detect all external flash devices:
+   ;--------------------------------------------------------------------------------------------------------------------
+
+detect_ext_flash_cfg_TC1796:
+   gosub init_ext_flash_TC1796 &CS0_Addr 0 20.                    ; try to detect external flash device at /CS0 address space, unit number 20
+   entry &ext_flash0_size                                
+   gosub init_ext_flash_TC1796 &CS1_Addr 0 21.                    ; try to detect external flash device at /CS1 address space, unit number 21
+   entry &ext_flash1_size                                
+   gosub init_ext_flash_TC1796 &CS2_Addr 0 22.                    ; try to detect external flash device at /CS2 address space, unit number 22
+   entry &ext_flash2_size                                
+   gosub init_ext_flash_TC1796 &CS3_Addr 0 23.                    ; try to detect external flash device at /CS3 address space, unit number 23
+   entry &ext_flash3_size
+   &ext_flash_size=&ext_flash0_size+&ext_flash1_size+&ext_flash2_size+&ext_flash3_size         
+   return
+
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; TC1797/TC1798/TC1793: detect all external flash devices:
+   ;--------------------------------------------------------------------------------------------------------------------
+
+detect_ext_flash_cfg_TC1797:
+   gosub init_ext_flash_TC1797 &CS0_Addr 0 20.                    ; try to detect external flash device at /CS0 address space, unit number 20
+   entry &ext_flash0_size                               
+   gosub init_ext_flash_TC1797 &CS1_Addr 0 21.                    ; try to detect external flash device at /CS1 address space, unit number 21
+   entry &ext_flash1_size                               
+   gosub init_ext_flash_TC1797 &CS2_Addr 0 22.                    ; try to detect external flash device at /CS2 address space, unit number 22
+   entry &ext_flash2_size                               
+   gosub init_ext_flash_TC1797 &CS3_Addr 0 23.                    ; try to detect external flash device at /CS3 address space, unit number 23
+   entry &ext_flash3_size
+   &ext_flash_size=&ext_flash0_size+&ext_flash1_size+&ext_flash2_size+&ext_flash3_size         
+   return
+
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; TC1796: create all known internal flash areas:
+   ;--------------------------------------------------------------------------------------------------------------------
+
+init_int_flash_TC1796:
+
+   &int_flash_size=0x200000
+
+   ; Check chip ID IF logical flash sectors are supported by device
+   &chipid=Data.Long(D:0xF0000074)
+   &sectorsize=0x4000
+
+   IF &chipid<0x00008A02
+      &sectorsize=0x10000                        ; TC1796 revision A chips
+
+   ; processor internal program flash
+   FLASH.Create  1. 0xA0000000--0xA000FFFF &sectorsize TARGET Long
+   FLASH.Create  2. 0xA0010000--0xA001FFFF &sectorsize TARGET Long
+   FLASH.Create  3. 0xA0020000--0xA003FFFF 0x20000     TARGET Long
+   FLASH.Create  3. 0xA0040000--0xA007FFFF 0x40000     TARGET Long
+   FLASH.Create  3. 0xA0080000--0xA01FFFFF 0x80000     TARGET Long
+   
+   ; processor internal data flash
+   FLASH.Create  4. 0xAFE00000--0xAFE0FFFF 0x10000     TARGET Long
+   FLASH.Create  5. 0xAFE10000--0xAFE1FFFF 0x10000     TARGET Long
+
+   ; load TC1796 flash driver
+   FLASH.Target 0xD4000000 0xD0000000 0x1000 &ScriptPath\scripts\TC1796_Flash.bin
+
+   return &int_flash_size
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; TC1797: create all known internal flash areas:
+   ;--------------------------------------------------------------------------------------------------------------------
+
+init_int_flash_TC1797:
+
+   &int_flash_size=0x400000
+
+   map.denyaccess 0xC8000000++0x07FFFFFF   ; workaround for DMA_TC.013
+
+   ;========================================================================
+   ; Flash Declaration
+   ; Declaring TC1797 internal flash requires an additional parameter providing
+   ; the base address for the flash device to use (FLASH_0 or FLASH_1).
+   ; In case the parameter is omitted, the default is FLASH_0.
+
+   ; processor internal program flash
+   FLASH.Create 1. 0xa0000000--0xa000ffff 0x04000 TARGET Long 0xf8002000
+   FLASH.Create 2. 0xa0010000--0xa001ffff 0x04000 TARGET Long 0xf8002000
+   FLASH.Create 3. 0xa0020000--0xa003ffff 0x20000 TARGET Long 0xf8002000
+   FLASH.Create 3. 0xa0040000--0xa01fffff 0x40000 TARGET Long 0xf8002000
+   FLASH.Create 4. 0xa0200000--0xa020ffff 0x04000 TARGET Long 0xf8004000
+   FLASH.Create 5. 0xa0210000--0xa021ffff 0x04000 TARGET Long 0xf8004000
+   FLASH.Create 6. 0xa0220000--0xa023ffff 0x20000 TARGET Long 0xf8004000
+   FLASH.Create 6. 0xa0240000--0xa03fffff 0x40000 TARGET Long 0xf8004000
+
+   ; processor internal data flash
+   FLASH.Create 7. 0xafe00000--0xafe07fff 0x08000 TARGET Long 0xf8002000
+   FLASH.Create 8. 0xafe10000--0xafe17fff 0x08000 TARGET Long 0xf8002000
+
+   ; load TC1797 flash driver
+   FLASH.Target 0xD4000000 0xD0000000 0x1000 &ScriptPath\scripts\TC1797_Flash.bin
+
+   return &int_flash_size
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; TC1798: create all known internal flash areas:
+   ;--------------------------------------------------------------------------------------------------------------------
+
+init_int_flash_TC1798:
+
+   &int_flash_size=0x400000
+
+   ;========================================================================
+   ; Flash Declaration
+   ; Declaring TC1798 internal flash requires an additional parameter providing
+   ; the base address for the flash device to use (FLASH_0 or FLASH_1).
+   ; In case the parameter is omitted, the default is FLASH_0.
+
+   ; processor internal program flash
+   FLASH.Create 1. 0xa0000000--0xa000ffff 0x04000 TARGET Long 0xf8002000
+   FLASH.Create 2. 0xa0010000--0xa001ffff 0x04000 TARGET Long 0xf8002000
+   FLASH.Create 3. 0xa0020000--0xa003ffff 0x20000 TARGET Long 0xf8002000
+   FLASH.Create 3. 0xa0040000--0xa01fffff 0x40000 TARGET Long 0xf8002000
+   FLASH.Create 4. 0xa0800000--0xa080ffff 0x04000 TARGET Long 0xf8004000
+   FLASH.Create 5. 0xa0810000--0xa081ffff 0x04000 TARGET Long 0xf8004000
+   FLASH.Create 6. 0xa0820000--0xa083ffff 0x20000 TARGET Long 0xf8004000
+   FLASH.Create 6. 0xa0840000--0xa09fffff 0x40000 TARGET Long 0xf8004000
+
+   ; processor internal data flash
+   FLASH.Create 7. 0xaf000000--0xaf017fff 0x18000 TARGET Long 0xf8002000
+   FLASH.Create 8. 0xaf080000--0xaf097fff 0x18000 TARGET Long 0xf8002000
+
+   ; load TC1798 flash driver
+   FLASH.Target 0xC0000000 0xD0000000 0x1000 &ScriptPath\scripts\TC1798_Flash.bin
+
+   return &int_flash_size
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------
+; TC1796: try to detect external flash device at address &addr on chip select line &chip_sel
+;-----------------------------------------------------------------------------------------------------------------------
+
+init_ext_flash_TC1796:
+
+   entry &addr &chip_sel &unit_number
+
+   if (&addr==0)
+   (
+      return 0
+   )
+   
+   &p_addrsel=0
+   &p_buscon=0
+   &p_busap=0
+
+   &addrsel_old=0
+   &buscon_old=0
+   &busap_old=0
+
+
+   if &chip_sel==0
+   (
+     &p_addrsel=0xF8000080
+     &p_buscon=0xF80000C0
+     &p_busap=0xF8000100      
+   )
+   if &chip_sel==1
+   (
+     &p_addrsel=0xF8000088
+     &p_buscon=0xF80000C8
+     &p_busap=0xF8000108
+   )
+   if &chip_sel==2
+   (
+     &p_addrsel=0xF8000090
+     &p_buscon=0xF80000D0
+     &p_busap=0xF8000110      
+   )
+   if &chip_sel==3
+   (
+     &p_addrsel=0xF8000098
+     &p_buscon=0xF80000D8
+     &p_busap=0xF8000118      
+   )
+
+   ; store EBU settings
+   &addrsel_old=Data.Long(D:&p_addrsel)
+   &buscon_old=Data.Long(D:&p_buscon)
+   &busap_old=Data.Long(D:&p_busap)
+
+
+   ; open a small 128K window with slow bus timing valid for all know flash device
+
+   data.set &p_addrsel %Long ((&addr&0xFFFFF000)|0x8A3)   ; &addr..&addr+0x0001FFFF, alt. segment=0x80000000
+   data.set &p_buscon %Long 0x00922200           ; AALIGN=1, CMULT=1 (x4), DLOAD=1, PREFETCH=0, 32bit, demux, write enabled
+   data.set &p_busap %Long 0x43181401            ; DTACS=1, DTARDWR=0, WRRECOVC=4, RDRECOVC=2, DATAC=0,
+                                                 ; BURSTC=0, WAITWRC=3, WAITRDC=4, CMDDELAY=1, ADDRC=1
+
+   gosub detect_ext_flash &addr 
+   entry &flash_device &flash_size &addrsel_new
+
+   if (&flash_size==0)
+   (
+      ; change external bus interface into unaligned mode 
+      data.set &p_buscon %Long 0x00922000        ; AALIGN=0, CMULT=1 (x4), DLOAD=1, PREFETCH=0, 32bit, demux, write enabled
+
+      gosub detect_ext_flash &addr 
+      entry &flash_device &flash_size &addrsel_new
+   )
+
+   
+   if (&flash_size>0)
+   (
+      ; init EBU required flash address space
+      data.set &p_addrsel %Long &addrsel_new  ; setup EBU_ADDRSEL  
+
+      ; init flash device (uncached address space):
+      gosub init_ext_flash &addr &flash_device &unit_number
+   )
+   else
+   (
+      ; restore EBu settings
+      data.set &p_addrsel %Long &addrsel_old  ; restore EBU_ADDRSEL
+      data.set &p_buscon %Long &buscon_old    ; restore EBU_BUSCON
+      data.set &p_busap %Long &busap_old      ; restore EBU_BUSAP
+   )
+
+   return &flash_size
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+;-----------------------------------------------------------------------------------------------------------------------
+; TC1797: try to detect external flash device at address &addr on chip select line &chip_sel
+;-----------------------------------------------------------------------------------------------------------------------
+
+init_ext_flash_TC1797:
+
+   entry &addr &chip_sel &unit_number
+
+   if (&addr==0)
+   (
+      return 0
+   )
+   
+   &p_addrsel=0
+   &p_busrcon=0
+   &p_buswcon=0
+   &p_busrap=0
+   &p_buswap=0
+
+   &addrsel_old=0
+   &busrcon_old=0
+   &busrap_old=0
+   &buswcon_old=0
+   &buswap_old=0
+
+   if &chip_sel==0
+   (
+     &p_addrsel=0xF8000018
+     &p_busrcon=0xF8000028
+     &p_busrap=0xF800002C
+     &p_buswcon=0xF8000030
+     &p_buswap=0xF8000034
+   )
+   if &chip_sel==1
+   (
+     &p_addrsel=0xF800001C
+     &p_busrcon=0xF8000038
+     &p_busrap=0xF800003C
+     &p_buswcon=0xF8000040
+     &p_buswap=0xF8000044
+   )
+   if &chip_sel==2
+   (
+     &p_addrsel=0xF8000020
+     &p_busrcon=0xF8000048
+     &p_busrap=0xF800004C
+     &p_buswcon=0xF8000050
+     &p_buswap=0xF8000054
+   )
+   if &chip_sel==3
+   (
+     &p_addrsel=0xF8000024
+     &p_busrcon=0xF8000058
+     &p_busrap=0xF800005C
+     &p_buswcon=0xF8000060
+     &p_buswap=0xF8000064
+   )
+
+   ; store EBU settings
+   &addrsel_old=Data.Long(D:&p_addrsel)
+   &busrcon_old=Data.Long(D:&p_busrcon)
+   &busrap_old=Data.Long(D:&p_busrap)
+   &buswcon_old=Data.Long(D:&p_buswcon)
+   &buswap_old=Data.Long(D:&p_buswap)
+
+
+   ; open a small 128K window with slow bus timing valid for all know flash device
+
+   data.set &p_addrsel %Long ((&addr&0xFFFFF000)|0x8A3)   ; &addr..&addr+0x0001FFFF, alt. segment=0x80000000
+
+   data.set &p_busrcon %Long 0x40D10043
+   data.set &p_busrap  %Long 0x10110821
+   data.set &p_buswcon %Long 0x40D10000
+   data.set &p_buswap  %Long 0x10110641
+
+   gosub detect_ext_flash &addr 
+   entry &flash_device &flash_size &addrsel_new
+   
+   if (&flash_size>0)
+   (
+      ; init EBU required flash address space
+      data.set &p_addrsel %Long &addrsel_new  ; setup EBU_ADDRSEL  
+
+      ; init flash device (uncached address space):
+      gosub init_ext_flash &addr &flash_device &unit_number
+   )
+   else
+   (
+      ; restore EBU settings
+      data.set &p_addrsel %Long &addrsel_old  ; restore EBU_ADDRSEL
+      data.set &p_busrcon %Long &busrcon_old  ; restore EBU_BUSRCON
+      data.set &p_busrap %Long &busrap_old    ; restore EBU_BUSRAP
+      data.set &p_buswcon %Long &buswcon_old  ; restore EBU_BUSWCON
+      data.set &p_buswap %Long &buswap_old    ; restore EBU_BUSWAP
+   )
+
+   return &flash_size
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+
+;-----------------------------------------------------------------------------------------------------------------------
+; try to detect external flash device
+;-----------------------------------------------------------------------------------------------------------------------
+
+detect_ext_flash:
+
+   entry &addr
+
+   &manid=0
+   &device=0
+   &flash_device=""
+   &flash_size=0
+   &addrsel=0;
+
+   ; check for intel/ST flash device
+   data.set &addr %long 0x00900090               ; write identification command to address of external flash
+   &manid=data.long(D:&addr)                     ; read manufacturer identifier
+   &device=data.long(D:&addr+4)                  ; read device identifier
+   data.set &addr %long 0x00FF00FF               ; reset device into read mode
+
+   if (&manid==0x00890089)                       ; Intel Flash detected
+   (
+      if (&device==0x88028802)
+      (
+         &flash_device="28F128K3"
+         &flash_size=0x4000000
+         &addrsel=((&addr&0xFFFFF000)|0x813)
+      )
+      else if (&device=0x881B881B)
+      (
+         &flash_device="28F128P30"
+         &flash_size=0x4000000
+         &addrsel=((&addr&0xFFFFF000)|0x813)
+      )
+   )
+   else if (&manid==0x00000020)                  ; ST flash detected
+   (
+      if (&device==0x00008837)
+      (
+         &flash_device="M58BW32FB"
+         &flash_size=0x400000
+         &addrsel=((&addr&0xFFFFF000)|0x853)
+      )
+      else if (&device==0x00008838)
+      (
+         &flash_device="M58BW32FT"
+         &flash_size=0x400000
+         &addrsel=((&addr&0xFFFFF000)|0x853)
+      )
+      else if (&device==0x00008839)
+      (
+         &flash_device="M58BW16FB"
+         &flash_size=0x200000
+         &addrsel=((&addr&0xFFFFF000)|0x863)
+      )
+      else if (&device==0x0000883A)
+      (
+         &flash_device="M58BW16FT"
+         &flash_size=0x200000
+         &addrsel=((&addr&0xFFFFF000)|0x863)
+      )           
+   )
+        
+   if ("&flash_device"=="")
+   (
+      ; try to detect Spansion flash
+      data.set &addr+0x1554 %long 0xAA
+      data.set &addr+0xAA8 %long 0x55
+      data.set &addr+0x1554 %long 0x90
+      &manid=data.long(D:&addr)                  ; read manufacturer identifier
+      &device=data.long(D:&addr+4)               ; read device identifier
+      &device=&device|(data.long(D:&addr+0x38)<<8)  
+      data.set &addr %long 0x0F                  ; reset device into read mode
+
+      if (&manid==0x00000001)
+      (
+         if ((&device==0x0000087E)||(&device==0x0000367E))
+         (
+            &flash_device="S29CD016"
+            &flash_size=0x200000
+            &addrsel=((&addr&0xFFFFF000)|0x863)
+         )
+         else if (&device==0x0000097E)
+         (
+            &flash_device="S29CD032"
+            &flash_size=0x400000
+            &addrsel=((&addr&0xFFFFF000)|0x853)
+         )
+      )
+   )
+
+   return &flash_device &flash_size &addrsel
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+;-----------------------------------------------------------------------------------------------------------------------
+; init detected external flash device
+;-----------------------------------------------------------------------------------------------------------------------
+
+init_ext_flash:
+
+   entry &addr &ext_flash &unit
+
+
+   if "&ext_flash"=="28F128K3"
+   (
+      ; define external flash memory: 2x INTEL 28F128K3
+      ; define uncached address space
+      flash.create &unit (&addr+0x00000000)--(&addr+0x01FFFFFF) 0x40000 I28F200K3 Long
+
+      flash.unlock &unit
+   )
+
+   if "&ext_flash"=="S29CD016"
+   (
+      ; define external flash memory: Spansion S29CD016G/J or S29CL016J
+      ; define uncached address space
+      flash.create &unit (&addr+0x00000000)--(&addr+0x0000FFFF) 0x2000  AM29BDD Long
+      flash.create &unit (&addr+0x00010000)--(&addr+0x001EFFFF) 0x10000 AM29BDD Long
+      flash.create &unit (&addr+0x001F0000)--(&addr+0x001FFFFF) 0x2000  AM29BDD Long
+   )
+
+   if "&ext_flash"=="S29CD032"
+   (
+      ; define external flash memory: Spansion S29CD032G/J or S29CL032J
+      ; define uncached address space
+      flash.create &unit (&addr+0x00000000)--(&addr+0x0000FFFF) 0x2000  AM29BDD Long
+      flash.create &unit (&addr+0x00010000)--(&addr+0x003EFFFF) 0x10000 AM29BDD Long
+      flash.create &unit (&addr+0x003F0000)--(&addr+0x003FFFFF) 0x2000  AM29BDD Long
+   )
+
+   if "&ext_flash"=="M58BW16FB"
+   (
+      ; define external flash memory: ST M58BW16FB
+      ; define uncached address space
+      flash.create &unit (&addr+0x00000000)--(&addr+0x0000FFFF) 0x2000  M58B032 Long
+      flash.create &unit (&addr+0x00010000)--(&addr+0x001FFFFF) 0x10000 M58B032 Long
+
+      flash.unlock &unit
+   )
+
+   if "&ext_flash"=="M58BW16FT"
+   (
+      ; define external flash memory: ST M58BW16FT
+      ; define uncached address space
+      flash.create &unit (&addr+0x00000000)--(&addr+0x001EFFFF) 0x10000 M58B032 Long
+      flash.create &unit (&addr+0x001F0000)--(&addr+0x001FFFFF) 0x2000  M58B032 Long
+
+      flash.unlock &unit
+   )
+
+   if "&ext_flash"=="M58BW32FB"
+   (
+      ; define external flash memory: ST M58BW32FB
+      ; define uncached address space
+      flash.create &unit (&addr+0x00000000)--(&addr+0x0000FFFF) 0x4000  M58B032 Long
+      flash.create &unit (&addr+0x00010000)--(&addr+0x0001FFFF) 0x2000  M58B032 Long
+      flash.create &unit (&addr+0x00020000)--(&addr+0x003FFFFF) 0x10000 M58B032 Long
+
+      flash.unlock &unit
+   )
+
+   if "&ext_flash"=="M58BW32FT"
+   (
+      ; define external flash memory: ST M58BW32FT
+      ; define uncached address space
+      flash.create &unit (&addr+0x00000000)--(&addr+0x003DFFFF) 0x10000 M58B032 Long
+      flash.create &unit (&addr+0x003E0000)--(&addr+0x003EFFFF) 0x2000  M58B032 Long
+      flash.create &unit (&addr+0x003F0000)--(&addr+0x003FFFFF) 0x4000  M58B032 Long
+
+      flash.unlock &unit
+   )
+
+   return
+;-----------------------------------------------------------------------------------------------------------------------
+

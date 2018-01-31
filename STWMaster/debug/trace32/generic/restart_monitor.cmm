@@ -1,0 +1,21 @@
+ENTRY &filename
+
+   if &rom_monitor
+   (
+      ;prevent the script to stop when connection is lost after reset
+      ON ERROR JUMPTO continue
+
+      ; do a hardware reset
+      per.set 0xF0000010 %LONG 0x00200001
+   )
+
+continue:
+   ; wait until flashloader has started
+   wait 2.s
+
+   sys.down
+   sys.up
+
+   do &ScriptPath\scripts\start_debug &filename
+
+enddo

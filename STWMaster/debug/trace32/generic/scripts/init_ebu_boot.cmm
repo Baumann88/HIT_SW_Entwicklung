@@ -1,0 +1,37 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:    init_ebu_boot.cmm       
+;  Version: 07.09.2007, Herb                            Copyrights (c) 2007, STW
+;
+;  Description: initialize external bus interface like after reset with boot from ext. flash
+;
+;  Note:        global variable cpu_name must be set by caller
+;
+;  Target:      projects with TC1796, TC1797, TC1798 and TC1793 CPUs
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; check, if this is a TC1796 CPU -> yes, init EBU like in ext. boot mode, boot cfg. word = 0x00009431
+   ;--------------------------------------------------------------------------------------------------------------------
+
+   if ("&cpu_name"=="TC1796")                   ; TC1796 EBU /CS0 init:
+   (
+      data.set  0xF8000010 %Long 0x08010068     ; set SFR EBU_CON (ext. boot mode)
+      data.set  0xF8000080 %Long 0xA0000001     ; set SFR EBU_ADDRSEL0 (ext. boot mode)
+      data.set  0xF80000C0 %Long 0x8092227F     ; set SFR EBU_BUSCON0 (ext. boot mode)
+      data.set  0xF8000100 %Long 0x7F3FFFFF     ; set SFR EBU_BUSAP0  (ext. boot mode)
+   )
+
+   
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; check, if this is a TC1797 CPU -> yes, init EBU like in ext. boot mode
+   ;--------------------------------------------------------------------------------------------------------------------
+
+   if ("&cpu_name"=="TC1797")
+   (
+      !!! TBD !!!
+
+   )
+
+enddo
+;-----------------------------------------------------------------------------------------------------------------------

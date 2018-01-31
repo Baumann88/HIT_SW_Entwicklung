@@ -1,0 +1,290 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:        start_debug.cmm
+;  Version:     12.12.2007, Herb                                         Copyrights (c) 2004, STW
+;
+;  Description: T32-Command-File for TriCore projects
+;
+;  Target:      projects with TC1796, TC1797, TC1798 and TC1793 CPUs
+;-----------------------------------------------------------------------------------------------------------------------
+
+   GLOBAL   &ElfFile                                  ; debug file
+   GLOBAL   &ScriptPath                               ; relative script path
+   GLOBAL   &EcuExtPath                               ; path to ecu_specifics folder
+   ENTRY    &ElfFile &ScriptPath &EcuExtPath          ; load parameters to global vars       
+   GLOBAL   &rom_monitor                              ; Rom Monitor used? (TRUE/FALSE)
+   GLOBAL   &cpu_name &chip_id                        ; CPU name and CHIP ID
+   GLOBAL   &RamTarget                                ; Does loaded file occupies RAM memory (debug target)? 
+   GLOBAL   &T32BuildYear                             ; Trace32 Build Year
+   PRIVATE  &Version                                  ; Trace32 Version
+   PRIVATE  &WindowsCmm                               ; Path to user-configured windows.cmm file
+   
+   &Version="V1.06r0"
+   
+   &int_flash_size=0
+   &ext_flash_size=0
+   
+   ; set default script path if not set by caller
+   if ("&ScriptPath"=="")
+   (
+      &ScriptPath="."
+   )   
+   if ("&EcuExtPath"=="")
+   (
+      &EcuExtPath=".\ecu_specific"
+   )
+   
+   ; write the restart information before everything else, so we can use the reload button
+   ; even if this script fails during execution
+   open  #1 "restart.cmm" /create                 ; create file: restart.cmm
+   write #1 "do &ScriptPath\scripts\start_debug.cmm &ElfFile &ScriptPath &EcuExtPath"
+   write #1 "enddo"
+   close #1
+   
+   ; --- get build year of Trace32 ---
+   &&T32BuildYear=string.mid(software.version(),2,4)
+   
+   ; --- reset window configuration ---
+   if (os.file(.\windows.cmm))
+   (
+      winclear
+      area
+      &WindowsCmm=".\windows.cmm"
+   )
+   else
+   (
+      if (os.file(&ScriptPath\windows.cmm))
+      (
+         winclear
+         area
+         &WindowsCmm="&ScriptPath\windows.cmm"
+      )
+   )
+   
+   
+   do &ScriptPath\scripts\detect_cpu                        ; try to auto detect CPU
+   entry &cpu_name &chip_id
+
+   if ("&cpu_name"=="unknown")                  ; no target CPU detected?
+   (
+      area
+      print "error: can't detect CPU"
+      enddo                                     ; stop program flow and show error in area window
+   )   
+   
+   ; --- do reset and clear area output of previous session ---
+   reset
+   area.clear
+
+   ; We print some useful information about the current configuration
+   print "STW TriCore generic debug script (Version: &Version)"
+   print "===================================================="
+   print "Generic Script base path: &ScriptPath"
+   print "Ecu specific extension search path: &EcuExtPath"
+   print "Trace32 Build Year: &T32BuildYear"
+   print "Detected CPU: &cpu_name"
+
+   system.cpu    &cpu_name
+   system.option imaskasm on
+   system.option imaskhll off                   ; do not stop interrupts during HLL stepping
+   system.option dualport on                    ; enable access when CPU is running
+   system.option stepsoft off                   ; disable stepsoft option as default
+
+   ; check for DAP interface on TriCore AudoFuture and AudoMax device
+   if (("&cpu_name"=="TC1797")||("&cpu_name"=="TC1793")||("&cpu_name"=="TC1798"))
+   (
+      if (id.cable()==0x0029)
+      (
+         ; Bi-Directional Debug Cable detected
+         ; switch to DAP2 mode instead of using JTAG
+         system.config Interface DAP2
+      )
+      else
+      (
+         ; Uni-Directional Debug Cable
+         ; use JTAG as default mode
+         system.config Interface JTAG
+      )
+   )
+
+   ;--- reset memory mapping for emulator ---
+   map.reset
+
+   ;--- define flash ROM area (for hardware breakpoints) ---
+   map.bonchip 0x80000000--0x83FFFFFF
+   map.bonchip 0xA0000000--0xA3FFFFFF
+
+   ; call user defined script before sys.up
+   if (os.file(..\pre_init.cmm))
+   (
+      do ..\pre_init.cmm &ElfFile
+   )
+
+   ;--- enter debug mode, connect to target ---
+   system.up
+
+   ; check if this is a ROM monitor debug session
+   LOCAL &SBSRC0
+   &SBSRC0=data.long(D:0xF7E0FFBC)
+
+   if (&SBSRC0==0x000010FF)
+   (
+      ; rom monitor is used so do the monitor init routine
+      ; rom_monitor is true
+      &rom_monitor=(0==0)
+
+      ; overwrite the default restart.cmm with a rom monitor version
+      open #1 "restart.cmm" /create                 ; create file: restart.cmm
+      write #1 "do restart_monitor.cmm &ElfFile"
+      write #1 "enddo"
+      close #1
+   )
+   else
+   (
+      ; rom_monitor is false
+      &rom_monitor=(1==0)
+
+      do &ScriptPath\scripts\init_cpu                        ; do special CPU initialization
+      do &ScriptPath\scripts\init_ebu                        ; init external bus interface
+      do &ScriptPath\scripts\init_flash                      ; init all flash device
+      ENTRY &int_flash_size &ext_flash_size
+      flash.auto.all                             ; enable automatic flash programming
+   )
+
+
+;=======================================================================================================================
+; stop STM on break
+   per.set   0xF0000200 %LONG 0x214              ; enable STM suspend
+;=======================================================================================================================
+   
+   gosub LoadFileToTarget
+   
+
+   if &rom_monitor
+   (
+      if Y.EXIST(MEM_INT_IVRAM_LOADADDR_START)
+      (      
+        d.copy __INTVECT_BASE++0x1FFF MEM_INT_IVRAM_LOADADDR_START /VERIFY
+      )
+      else
+      (
+        ; backward compability for old linker scripts where the etext symbol is misused 
+        ; to mark the beginning of the interrupt vector defautlt table load address
+        d.copy __INTVECT_BASE++0x1FFF etext /VERIFY
+      )      
+      d.copy _default_trap_vect++0xBF gu32_default_trap_vect /VERIFY
+   )
+   else
+   (
+      flash.auto.off                             ; write all changed flash sectors...
+   )
+
+   gosub CheckSystemStepsoft
+
+   register.set PC _start                        ; set PC to reset address (startup code)
+
+   if (os.file(&EcuExtPath\post_init.cmm))
+   (
+      do &EcuExtPath\post_init.cmm &ElfFile     ;call ecu_specific post-initialization script for elf-file dependant processing
+   )
+   
+   if (os.file(..\post_init.cmm))
+   (
+      do ..\post_init.cmm &ElfFile              ;call user defined script after loading of elf file
+   )
+
+   if (os.file(&WindowsCmm))
+   (   
+      winclear
+      do &WindowsCmm                             ;--- DEFINES OF EMULATOR DESKTOP ---
+   )
+   
+   setup.var %DECIMAL %HEX                       ; show variables in HEX and DECIMAL format
+   mode.hll                                      ; switch to high level language mode
+
+   if &rom_monitor
+   (  
+      go x_sys_init
+      go.up                                      ; return from x_sys_init (break needed by ROM-Monitor!)
+
+      if Y.EXIST(xs_sys_init)
+      (
+         go.up                                  ; return from xs_sys_init if safety layer is used
+      )
+   )
+   else
+   (
+      go main                                    ; run to main function
+
+      ; write protect /CS0 address area (external flash)
+      ; because Trace32 versions from 2009 on do strange write access into onchip memory areas
+      ; this cause the Numonix/ST Flash to enter special operation modes
+
+      if (os.file(&ScriptPath\scripts\wp_cs0.cmm)&&(&ext_flash_size>0))
+      (
+         do &ScriptPath\scripts\wp_cs0.cmm
+      )
+   )
+   enddo
+   
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; check whether or not the system.stepsoft option is needed
+   ;--------------------------------------------------------------------------------------------------------------------
+
+CheckSystemStepsoft:
+   
+   if &rom_monitor
+   (
+      system.option stepsoft on                 ; ROM Monitor needs the stepsoft option in any case...
+   )
+   
+   if ("&cpu_name"=="TC1796")
+   (
+      ; on TC1796, standard debug target (RAM) is linked to either 0xA4000000 or 0x84000000 everything else is flash
+      ; "stepsoft" will be only activated for debug targets as this option is problematic when debugging from ROM
+      if ((V.VALUE(&_start)&0xF000000)==0x4000000)
+      (
+         system.option stepsoft on             ; TC1796 targets with MPU enabled need the STEPSOFT option
+      )
+   ) 
+   return
+  
+;-----------------------------------------------------------------------------------------------------------------------   
+
+
+
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; load the required file to target (elf or signed HEX)
+   ;--------------------------------------------------------------------------------------------------------------------
+
+LoadFileToTarget:
+
+   data.load.elf &ElfFile /GNU /NOCODE              ; load symbol table to determine ROM or RAM target
+   
+   if ((V.VALUE(&_start)&0xF000000)==0x4000000)     ; _start symbol in RAM address range?
+   (
+      ; RAM target
+      &RamTarget=(0==0)
+      data.load.elf &ElfFile /GNU /VERIFY           ; just load elf file to RAM
+   )
+   else
+   (
+      ; ROM target
+      &RamTarget=(0==1)
+
+      if (os.file(loadfile.cfg))
+      (
+         do &ScriptPath\scripts\load_hex.cmm Load
+      )
+      else
+      (
+         data.load.elf &ElfFile /GNU /VERIFY        ; load application program
+      )
+   )
+
+   
+   return
+  
+;-----------------------------------------------------------------------------------------------------------------------   

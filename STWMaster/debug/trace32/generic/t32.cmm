@@ -1,0 +1,133 @@
+;Default startup program for TRACE32
+;
+;This startup program can be modified according to your needs.
+
+; Paramters ScriptPath and EcuExtPath are used to pass Path information to sub-scripts. Their values may be set by a calling ECU-specific script.
+; However, if the generic script is used, their default values will be used, which assume ScriptPath to be the current directory
+; and EcuExtPath to be ".\ecu_specific". 
+
+ENTRY &startscript &filename &script_path &ecu_ext
+
+; set default position, size and mode
+;FramePOS 1. 1. 120. 40. Maximized
+; set tab size to STW standard of 3 spaces
+SETUP.TabSize 3
+
+;choose hex mode for input
+radix hex
+
+; Default ScriptPath is the current directory
+if ("&script_path"=="")
+(
+   &script_path="."
+)
+
+&t32_year=string.mid(software.version(),2,4)
+
+IF (&t32_year<2014)
+(
+   ; Load default Trace32 menu toolbar
+   MENU.ReProgram &script_path\t32.men   
+)
+
+print "Loading STW Toolbar extensions...."
+
+;Add some extra buttons to the toolbar
+MENU.ReProgram
+(
+   add
+   toolbar
+   (
+      toolitem "Reset" "RS,R" "run reset.cmm"
+      toolitem "Reload Program" "RL,X" "run restart.cmm"
+      toolitem "Select Signed Hexfile" "[5 6x,4 xw5Sx,3 x2w4x2wx,3 xwx4 xwx,3 xwx4 xwx,3 xwx4 xwx,2 12y,2 y10Wy,2 y10Dy,2 y3Y4W3Yy,2 y3YD2WD3Yy,2 y3YD2WD3Yy,2 y3YD2WD3Yy,2 y2Y6O2Yy,3 y8Yy,4 8y]" "run scripts\load_hex.cmm Select" 
+   )
+
+   ADD
+   MENU
+   (
+      POPUP "&SignedHex"
+      (   
+         MENUITEM "Select Signed HEX File" 
+         (
+            do &ScriptPath\scripts\load_hex.cmm Select
+         )
+         MENUITEM "Change Load Configuration"
+         (
+            LOCAL &HexFile
+            LOCAL &DontNotify 
+            LOCAL &LoadSelection
+            if (OS.FILE(loadfile.cfg))
+            (
+               OPEN  #1 loadfile.cfg /READ
+               READ  #1 %line &HexFile
+               READ  #1 %line &DontNotify
+               READ  #1 %line &LoadSelection
+               CLOSE #1
+            )
+            else
+            (
+               &HexFile=""
+               &DontNotify=""
+               &LoadSelection=""
+            )
+
+            DIALOG.view &ScriptPath\scripts\ldhexcfg.dlg
+            IF ("&DontNotify"=="SUPPRESS NOTIFICATION")
+               DIALOG.Set cbDontWarn (1==1)
+            IF ("&LoadSelection"=="LOAD ELF FILE")
+               DIALOG.SET loadfile.elf 
+            IF ("&LoadSelection"=="LOAD HEX FILE")
+               DIALOG.SET loadfile.hex              
+            STOP
+            DIALOG.END            
+
+            OPEN  #1 loadfile.cfg      /CREATE
+            WRITE #1 "&HexFile"
+            WRITE #1 "&DontNotify"
+            WRITE #1 "&LoadSelection"
+            CLOSE #1
+         )
+         MENUITEM "Reset Load Configuration"
+         (
+            RM loadfile.cfg
+         )
+      )
+   )
+)
+
+
+
+if (language()!="")
+(
+   local &menuname
+   &menuname="~~/t32"+language()
+   menu.rp &menuname
+)
+
+
+;Recall and Define History File
+autostore , history bookmark
+
+; Check for ECU extention 
+if ("&ecu_ext"!="")
+(
+   if (OS.FILE(&ecu_ext\t32.cmm))
+   (
+      do &ecu_ext\t32.cmm &startscript &filename &script_path &ecu_ext
+   )
+)
+else
+(
+   ; No EcuExtPath defined: Pre-set it with valid default value
+   &ecu_ext=".\ecu_specific"
+)
+
+
+if ("&startscript"!="")
+(
+   do &startscript &filename &script_path &ecu_ext
+)
+
+
+enddo

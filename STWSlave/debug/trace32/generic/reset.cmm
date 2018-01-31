@@ -1,0 +1,40 @@
+   if &rom_monitor
+   (
+      do &ScriptPath\reset_monitor.cmm
+      enddo
+   )
+
+   if (run())                   ; if debugger running: break
+      break
+
+   system.down                  ; target hardware reset
+   system.up                    ; connect debugger
+
+   if (run())                   ; if debugger running: break
+      break
+
+   do &ScriptPath\scripts\init_cpu          ; do special CPU initialization
+   do &ScriptPath\scripts\init_ebu          ; init external bus interface
+   do &ScriptPath\scripts\init_flash        ; init external flash device
+   entry &int_flash_size &ext_flash_size
+
+;========================================================================
+;  stop STM on break
+   per.set   0xF0000200 %LONG 0x214           ; enable STM suspend
+;========================================================================
+
+   register.set A10 __USTACK    ; set stack pointer
+   register.set PC _start       ; set PC to reset address (begin of startup code)
+   mode.hll                     ; switch to high level language mode
+   go main                      ; go to main function...
+
+   ; write protect /CS0 address area (external flash)
+   ; because Trace32 versions from 2009 on do strange write access into onchip memory areas
+   ; this cause the Numonix/ST Flash to enter special operation modes
+
+   if (OS.FILE(&ScriptPath\scripts\wp_cs0.cmm)&&(&ext_flash_size>0))
+   (
+      do &ScriptPath\scripts\wp_cs0.cmm
+   )
+
+enddo

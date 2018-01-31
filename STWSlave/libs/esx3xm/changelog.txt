@@ -1,0 +1,201 @@
+---------------------------------------------------------------------
+File:      changelog.txt
+Generated with Changelog Generator Version: 1.05r0
+---------------------------------------------------------------------
+
+
+
+Version: Current release                                                             From Revision: 18833     29.07.2015
+========================================================================================================================
+BUG:      Fixed x_in_init: if input is reconfigured from EVENT_TYPE to VOLTAGE_TYPE, unexpected event ISR results in NULL pointer access 
+BUG:      Added missing return value description (-11) C_CHECKSUM for several x_fl functions 
+BUG:      Added Flashloader version check to x_fl_get_content_changed_flag and x_fl_reset_content_changed_flag 
+CHG:      xs_os_set_task_safety_level: Changed error return values from C_CONFIG to C_NOACT if being called from ISR level (consolidation with return values of other functions (e.g. xs_os*) 
+CHG:      Added valid signature block to debug build target. Therefore HW-diagnosis and x_fl_perform_signature_block_check() will not report an error for debug targets 
+CHG:      Added range check for valid BDC values to x_fl_get_fingerprint 
+
+
+Version: v2_03r0                                                                     From Revision: 18762     09.07.2015
+========================================================================================================================
+BUG:      x_os_ functions should not execute the scheduler when interrupts are locked 
+BUG:      Fixed: xb_ssv_get_alive_error returns wrong error counter values if being called shortly after initialization 
+BUG:      x_out_init: in case of over-current the error callback should not be called several times 
+CHG:      Added MPU self-test during xs_sys_init() execution. 
+CHG:      xs_dp_read / xs_dp_write: Changed error return values from C_CONFIG to C_NOACT if being called from ISR level (consolidation with return values of other functions (e.g. xs_os*) 
+CHG:      Removed C_CONFIG error (attempt to init safe signal from non-interfering task) from error list as it is already prevented by MPU 
+CHG:      Internal xb_eb_fifo_get_fill_count() didn't need supervision permission 
+CHG:      odd CAN bitrates like 666666 should be supported by x_can_bus_init and x_can_bus_init_ext 
+CHG:      Fixed 24-bit relocation linker error for t_diag_am_check_permission and xt_diag_mpu_set
+CHG:      x_sys_init returns with C_WARN when verification of user EEPROM fails 
+NEW:      Added x(s)_fl_get_finger_print() function to read STW flashloader fingerprint information in application 
+NEW:      Implemented requirements from safe automated flashing concept:
+          - Added function x(s)_fl_get_content_changed_flag() to get informed about changed flash content
+          - Added function x(s)_fl_reset_content_changed_flag() to acknowledge change of flash content
+          - Added function x(s)_fl_perform_signature_block_check() to execute a checksum check of the address range(s) defined in a signature block
+          - Added definition of main application signature block to linker script and x_fl header. The signature block covers all flash data (intern and extern) occupied by the application. 
+          The end addresses are set by the linker.
+NEW:      Added linker scripts for cached code areas (cached intflash and cached extflash) 
+
+
+Version: v2_02r2                                                                     From Revision: 17204     18.06.2014
+========================================================================================================================
+BUG:      x_fl_set_checksum_block_check parameter ou8_OnOff range check missing 
+BUG:      x_can_bus_get_sample_point error index was set to wrong error index in error handler callback 
+BUG:      some x_os_ functions should report an error when called from ISR 
+BUG:      error defines XS_OUT_INIT_IDX / XS_OUT_INIT_UNPROTECTED_IDX and XS_MPU_INIT / XS_MPU_GET_MEM_PROTECTION_IDX were ambiguous 
+BUG:      Average frequency measurement: Virtual period feature does not work 
+BUG:      x_in_get_status may return wrong value for input pull-up / pull-down configuration if diagnosis is active 
+BUG:      x_tim_init didn't set oppv_Handle to NULL in case of an error 
+BUG:      xs_am_function_set_permission did set wrong function permission for system and ssv functions 
+BUG:      xt_diag_in_freq_avg_check_hardware() use wrong timeout value for PCP event monitoring 
+BUG:      x_os_ functions must not call the scheduler when called inside a critical section 
+CHG:      using x_os objects like semaphores, mutex, etc. will not extend the task cycle time of cyclic tasks 
+CHG:      renamed functions x_in_init_frequency_avg, x_in_get_frequency_avg, xs_in_init_frequency_avg, xs_in_get_frequency_avg into target specific functions starting with x_t_ respectively xs_t_ 
+CHG:      support company IDs with size of 5 characters 
+
+
+Version: v2_02r0                                                                     From Revision: 16855     16.05.2014
+========================================================================================================================
+BUG:      Fixed issue in expansion board interface that may cause EB07 / EB10 code to TRAP if MPU has been activated in SEPI applications 
+BUG:      Added error definition for x_os_set_task_timer_ext (C_RANGE) to error list 
+BUG:      SSV alive signal wasn't recognized if application uses critical section or expansion board software raises interrupt level for a long time
+BUG:      x_can_obj_close, x_can_bus_close: No trap can occur if a CAN message arrives during object deletion 
+BUG:      Wrong error handler position was returned when x_ser_init_rx/tx_buf was called before channel had been initialized 
+BUG:      Added invalid handle check for x_tim_set 
+BUG:      Added invalid handle check for x_tim_close 
+BUG:      Access manager module defines XS_AM_MODULE_SSV and XS_AM_MODULE_SYS were swapped 
+BUG:      Main switch software enable state returned to diagnosis library wasn't correct if relay is in an error condition 
+BUG:      x_sys_get_component_info does not return library version in correct BCD format 
+BUG:      Set negated counter values for incremental inputs when configured as X_IN_CIRCUIT_ACTIVE_LOW 
+BUG:      x_in_get_counter() now may generate a C_OVERFLOW error when initialized as type X_IN_TYPE_INCREMENTAL 
+BUG:      read the correct state of the MOD_OFF signal even when the main switch is disabled 
+CHG:      x_can_self_test continues testing even if one node is erroneous 
+CHG:      Added additional expansion board information to T_x_sys_system_information struct. 
+          T_x_sys_expboard_info does now contain information about software interface number and EB serial number 
+CHG:      Moved internal function to trigger expansion board interrupts to FASTRAM 
+CHG:      Extended internal diagnosis interface to provide address area accessed by DMA and DMA state 
+CHG:      Changed safety status of xs_ssv_reset to "does not affect safety". Non-interfering may now call this function 
+CHG:      xs_ssv_trigger and xs_uti_calc_crc_tricore were removed from the safety layer API as these functions are forbidden for safety relevant applications 
+CHG:      Provide mechanism to detect whether a given address area is PROTECTED 
+NEW:      x_can: added functions to modify the CAN bit time sample point 
+NEW:      Added internal function to report SSV disable relay state to expansion boards 
+NEW:      implemented an averaging frequency measurement 
+NEW:      implemented diagnosis functions for averaging frequency measurement 
+
+
+Version: v2_01r2                                                                     From Revision: 15507     06.08.2013
+========================================================================================================================
+BUG:      Temporary SSV disable request for main switches must not trigger generation of error flag X_OUT_RELAY_STATE_SSV_ERROR 
+
+
+Version: v2_01r1                                                                     From Revision: 14996     26.06.2013
+========================================================================================================================
+CHG:      Adapted linker scripts to match settings in ESX-3XL project 
+
+
+Version: v2_01r0                                                                     From Revision: 14956     26.06.2013
+========================================================================================================================
+BUG:      Fixed privileged instruction trap when error handler is being used 
+BUG:      Safety Layer functions could cause MPU data protection trap if the error handler has been activated 
+BUG:      Expansion Board ISR invocation caused a MPU execution trap if a safe task is being interrupted 
+BUG:      x_os_init accepts extern system heap as memclass for task stack creation 
+BUG:      
+          x_os: Communication objects like semaphore, mutex, mailbox and signal may be used also by cyclic tasks. 
+          The task timer and timer period values are now being stored before the OS timer is being used for communication object timeout.
+          Note: The task period will be prolonged by the time the task is waiting for a communication object
+BUG:      x_eep_flush does stall on read/write hardware errors 
+BUG:      corrected ADC sample rate to 2KHz +-2% 
+BUG:      Changed EEPROM mapping "namespace" to avoid name clash with KEFEX - applications 
+BUG:      Added SAFETY_CRITICAL attribute for xs_sys_init, xs_mpu_init, xs_out_relay_init, xs_out_relay_set and xs_out_relay_set_all  
+BUG:      Added function that increases interrupt level above max. EB level 
+BUG:      Corrected error description for "task handle not valid" - error in x_os_set_task_timer_ext, x_os_suspend_task, x_os_resume_task and x_os_delete_task 
+CHG:      Safety Layer: Utilized memory protection to assure that safety critical STW BIOS routines cannot be called from non-interfering tasks 
+CHG:      x_sys.h: Changed component name of extern flash boot sector to X_SYS_COMPONENT_EXT_FLASH_BOOT 
+CHG:      x_os_init / xs_os_init: Changed parameter ou16_MemClass to uint32 
+CHG:      Changed standard linker script names to tricore_std_sections(_intflash).ld 
+CHG:      Replaced "asection" with "section" attribute for MEM_SMALL and MEM_SMALL_BSS types 
+CHG:      Added "noiniline" attribute to CODERAM, INTROM, EXTROM and FASTRAM function attributes 
+CHG:      x_in_init use x_os_enter_critical / x_os_leave_critical instead of lock_all_interrupts 
+CHG:      x_os_get_status returns only C_NO_ERR 
+CHG:      xb_eb_relay_get_clearance return MSW_MODOFF signal default state X_ON and error code C_NOACT, when signal could not be determined 
+CHG:      Added error signal for "expansion board HW switched off safety relay" error; Changed names of x_out_relay error flag defines in out relay status 
+CHG:      Added errorhandler to xt_diag.h 
+CHG:      Added OS signaling routines to xb_eb_wrapper 
+CHG:      Changed EB interface, so that non-interfering tasks are not able to call safety critical functions 
+CHG:      Distinguish internally between output error callback and relay error callback types 
+NEW:      module xb_eb: added functions xb_eb_relay_get_clearance and xb_eb_relay_suppress_clearance 
+NEW:      added module xb_eb_os 
+
+
+Version: v2_00r0                                                                     From Revision: 13078     18.12.2012
+========================================================================================================================
+BUG:      in function x_sys_set_all_relays: fixed error position value according to user manual
+BUG:      fixed bug in x_in_init for input channel X_IN_15: input type X_IN_TYPE_VOLTAGE_5V and X_IN_TYPE_VOLTAGE_10V must be possible in any case
+CHG:      added x_mpu.h to x_esx3xm.h
+CHG:      in function x_in_init: extended range check for parameter ou16_InputType
+CHG:      added define for C2 main board hardware version
+CHG:      in function x_out_init: extended range check for parameter os32_MaxValue
+CHG:      Changed compiler optimization from -O1 to -Os 
+CHG:      Implemented access to mirrored EB address windows in USER0 mode (for non-interfering EB libraries)
+CHG:      x_os_init: changed memclass parameter from uint32 to uint16; Added uint16 cast to X_OS_HEAP_ defines
+CHG:      Safety Layer: Utilized memory protection to assure that safety critical STW BIOS routines cannot be called from non-interfering tasks 
+NEW:      Added function x_os_get_status to retrieve status information 
+NEW:      Added new function x_can_self_test to test CRC check of CAN hardware 
+NEW:      Added security layer (xs API) to libesx3xl project.
+NEW:      Added access manager to safety layer 
+NEW:      Added x_os_install_task_ext function that returns task handle. Added several x_os functions that can take the task handle as argument 
+NEW:      Added function xs_os_get_task_safety_level to read back the safety level of the given task 
+
+
+Version: v1_03r0                                                                     From Revision: 9884      31.08.2011
+========================================================================================================================
+BUG:      Fixed Bug that could cause new expansion board hardware (i.e. EB03 LK2) not to be correctly initialized after a system (x_sys_reset()) or SSV reset (x_ssv_reset())
+CHG:      Increased number of bios timers to circumvent problems with greedy expansion boards. 
+CHG:      Prefixed output sections of the libesx3xl.a library with "stw_bios" to be able to distinguish between application and library code in the linker script
+CHG:      Removed the libesx3xli.a library. If the library code shall be placed in internal flash, the linker script esx3xl_link_bios_intflash.ld can be used instead
+CHG:      x_os functions check, if x_os is already initialized or return with error (instead of CPU exception)
+NEW:      Added *.hpp headers to result folder. These headers contain STW type and function declarations with namespaced STW SEPI functions and data types. This change will only affect C++ projects.
+NEW:      Added x_mpu module to implement memory protection mechanisms for main stack and x_os task stack protection
+NEW:      Added ramping output function to x_out module: x_out_set_value_ramping(..)
+NEW:      Added overcurrent and overvoltage protection for UB1 supply. The corresponding main relay X_SYS_RELAY_01 will be shut off in case of an overcurrent or overvoltage event.
+          This error state is permanent and can be reset with the function x_out_reset_error() and the channel X_OUT_RESET_ERROR_UB_01 - X_OUT_RESET_ERROR_UB_03. 
+          In case of an overcurrent, the error can only be reset if a certain recovery time has passed.
+
+
+Version: v1_02r1                                                                     From Revision: 9533      01.07.2011
+========================================================================================================================
+BUG:      x_fl_get_checksum_block_check and x_fl_set_checksum_block_check used a wrong flashloader version for compatibility check 
+CHG:      Added .init section to linker script.
+
+
+Version: v1_02r0                                                                     From Revision: 8604      13.01.2011
+========================================================================================================================
+BUG:      x_out_set_control_parameters: s16_OutputLimitMax and s16_OutputLimitMin are not being checked for sane values 
+BUG:      error handler: modules x_eep, x_os_mbox, x_os_mutex, x_os_sema and x_os_signal return correct error position value
+CHG:      new function x_ssv_set_trigger() for setting the trigger line state manually
+CHG:      moved reserved RAM area in debug linker script from Address Range 0xA4200000 -- 0xA420FFFF to Address Range 0xA4000000 -- 0xA400FFFF 
+NEW:      added max. channel defines for X_SYS_RELAY_, X_SYS_SENSOR_SUPPLY_, X_SYS_LED_ and X_SYS_TEMP_
+NEW:      new function x_sys_get_component_info
+NEW:      added support for C2 hardware step (LK3) 
+NEW:      outputs configured as X_OUT_TYPE_CONTROL_CURRENT may be set to 100% with control loop disabled by using value X_OUT_VALUE_CONTROL_100_PERCENT
+
+
+Version: v1_00r1                                                                     From Revision: 6524      20.04.2010
+========================================================================================================================
+BUG:      setting of interface parameters didn't work for serial interface
+
+
+Version: v1_00r0                                                                     From Revision: 6353      13.04.2010
+========================================================================================================================
+BUG:      digital inputs configured with filter disabled will always return the raw input value
+BUG:      x_can_obj_get_status now works also on gateway message objects
+BUG:      x_in: optimized frequency measurement to prevent overflow for signals <20KHz
+CHG:      stdtypes.h: removed NULL define and added <stddef.h> include
+CHG:      x_in_init: return C_CONFIG when trying to configure an output of type X_IN_TYPE_VOLTAGE_5V or X_IN_TYPE_VOLTAGE_10V when one ore more inputs of the same group are configured as digital type (fixed 40V gain)
+NEW:      implemented incremental input functionality for 3XM main board inputs
+NEW:      added support for B-step hardware
+NEW:      x_sys.h: added defines for mainboard hardware version information
+NEW:      added function x_in_get_counter_direction (SEPI draft)
+NEW:      added functions x_sys_enter_critical and x_sys_leave_critical
+
+

@@ -1,0 +1,26 @@
+   if (run())                                    ; if debugger running: wait for break
+   (
+      break
+      wait 1.s
+   )
+
+   ON ERROR JUMPTO continue                      ; prevent the script to stop when connection is lost after reset
+
+   per.set 0xF0000010 %LONG 0x00200001           ; do a hardware reset
+
+continue:
+   wait 1.s                                      ; wait until flashloader has started
+   sys.down
+   sys.up
+
+;=======================================================================================================================
+;  stop STM on break
+   per.set   0xF0000200 %LONG 0x214              ; enable STM suspend
+;=======================================================================================================================
+
+   register.set PC _start                        ; set PC to reset address (startup code)
+
+   go x_sys_init
+   go.up                                         ; return from x_sys_init (break needed by ROM-Monitor!)
+
+enddo

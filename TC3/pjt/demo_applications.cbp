@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="demo_applications" />
+		<Option pch_mode="2" />
+		<Option compiler="ppcgcc" />
+		<Build>
+			<Target title="ProDB_AppErrorManage">
+				<Option output="../result/ProDB_AppErrorManage" prefix_auto="0" extension_auto="0" />
+				<Option object_output="../tmp" />
+				<Option type="0" />
+				<Option compiler="gnu_gcc_compiler_for_powerpc_powerpc-stw-linux-uclibc_linux_3417_uclibc_09332_v443" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-Wall" />
+					<Add option='&quot;--sysroot=C:\Program Files (x86)\STW\PowerPC GCC\stw-linux-uclib_powerpc_add-ons\4_4_3\tc3g_v1_01r0&quot;' />
+					<Add directory="../libs/BSP_Sun/CANLib_Sun" />
+				</Compiler>
+				<Linker>
+					<Add option='&quot;--sysroot=C:\Program Files (x86)\STW\PowerPC GCC\stw-linux-uclib_powerpc_add-ons\4_4_3\tc3g_v1_01r0&quot;' />
+					<Add library="rt" />
+					<Add library="taf" />
+					<Add library="dbus-1" />
+					<Add library="pthread" />
+					<Add directory="../libs/libtaf_v2_03r8" />
+				</Linker>
+			</Target>
+			<Target title="ProDB_AppNetwork">
+				<Option output="../result/ProDB_AppNetwork" prefix_auto="0" extension_auto="0" />
+				<Option object_output="../tmp" />
+				<Option type="0" />
+				<Option compiler="gnu_gcc_compiler_for_powerpc_powerpc-stw-linux-uclibc_linux_3417_uclibc_09332_v443" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-Wall" />
+					<Add option='&quot;--sysroot=C:\Program Files (x86)\STW\PowerPC GCC\stw-linux-uclib_powerpc_add-ons\4_4_3\tc3g_v1_01r0&quot;' />
+					<Add directory="../libs/BSP_Sun" />
+				</Compiler>
+				<Linker>
+					<Add option='&quot;--sysroot=C:\Program Files (x86)\STW\PowerPC GCC\stw-linux-uclib_powerpc_add-ons\4_4_3\tc3g_v1_01r0&quot;' />
+					<Add library="rt" />
+					<Add library="taf" />
+					<Add library="dbus-1" />
+					<Add library="pthread" />
+					<Add directory="../libs/libtaf_v2_03r8" />
+				</Linker>
+			</Target>
+			<Target title="ProDB_AppMonitor">
+				<Option output="../result/ProDB_AppMonitor" prefix_auto="0" extension_auto="0" />
+				<Option object_output="../tmp" />
+				<Option type="0" />
+				<Option compiler="gnu_gcc_compiler_for_powerpc_powerpc-stw-linux-uclibc_linux_3417_uclibc_09332_v443" />
+				<Compiler>
+					<Add option="-W" />
+					<Add option="-Wall" />
+					<Add option='&quot;--sysroot=C:\Program Files (x86)\STW\PowerPC GCC\stw-linux-uclib_powerpc_add-ons\4_4_3\tc3g_v1_01r0&quot;' />
+					<Add directory="../libs/BSP_Sun/CANLib_Sun" />
+				</Compiler>
+				<Linker>
+					<Add option='&quot;--sysroot=C:\Program Files (x86)\STW\PowerPC GCC\stw-linux-uclib_powerpc_add-ons\4_4_3\tc3g_v1_01r0&quot;' />
+					<Add library="rt" />
+					<Add library="taf" />
+					<Add library="dbus-1" />
+					<Add library="pthread" />
+					<Add directory="../libs/libtaf_v2_03r8" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-W" />
+			<Add option="-Wall" />
+			<Add option="-g" />
+			<Add option="-DPF_CAN=29 -DAF_CAN=PF_CAN" />
+			<Add directory="../src" />
+		</Compiler>
+		<Unit filename="../libs/BSP_Sun/CANLib_Sun/can.c">
+			<Option compilerVar="CC" />
+			<Option target="ProDB_AppErrorManage" />
+			<Option target="ProDB_AppMonitor" />
+		</Unit>
+		<Unit filename="../libs/BSP_Sun/CANLib_Sun/can.h">
+			<Option target="ProDB_AppErrorManage" />
+			<Option target="ProDB_AppMonitor" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/Config_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/DL_LogFile_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/DL_dbus_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/DP_dbus_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/DP_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/GPS_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/MEET_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/Network_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/SMS_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/Server_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/Signal_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/System_handler.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/dbus-utils.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/stwerrors.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/stwtypes.h">
+			<Option target="ProDB_AppErrorManage" />
+		</Unit>
+		<Unit filename="../libs/libtaf_v2_03r8/utils.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="../src/ProDB_AppErrorManage.c">
+			<Option compilerVar="CC" />
+			<Option target="ProDB_AppErrorManage" />
+		</Unit>
+		<Unit filename="../src/ProDB_AppMonitor.c">
+			<Option compilerVar="CC" />
+			<Option target="ProDB_AppMonitor" />
+		</Unit>
+		<Unit filename="../src/ProDB_AppNetwork.c">
+			<Option compilerVar="CC" />
+			<Option target="ProDB_AppNetwork" />
+		</Unit>
+		<Unit filename="../src/temperature.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
+			</wxsmith>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

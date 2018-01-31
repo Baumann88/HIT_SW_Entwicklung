@@ -1,0 +1,40 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:        wp_cs0.cmm
+;  Version:     05.11.2010, Herb
+;
+;  Description: write protect /CS0 address area (external flash)
+;               because Trace32 versions 2009 and later do strange write access into onchip memory areas
+;               this cause the Numonix/ST Flash to enter special operation modes
+;
+;  Note:        global variable cpu_name must be set by caller
+;
+;  Target:      projects with TC1796, TC1797, TC1798, TC1793 CPU
+;-----------------------------------------------------------------------------------------------------------------------
+
+wp_cs0:
+
+   if run()         ; wait until CPU stops at break point
+   (
+      goto wp_cs0
+   )
+
+   if ("&cpu_name"=="TC1796")
+   (
+      local &p_buscon &buscon
+
+      &p_buscon=0xF80000C0				; address of BUSCON0 register
+      &buscon=Data.Long(D:&p_buscon)                    ; set write disable bit:
+      data.set &p_buscon %Long (&buscon|0x80000000)     ; BUSCON0 |= 0x80000000
+   )
+
+   if (("&cpu_name"=="TC1797")||("&cpu_name"=="TC1798")||("&cpu_name"=="TC1793"))
+   (
+      local &p_addrsel0 &addrsel0
+
+      &p_addrsel0=0xF8000018				; address of ADDRSEL0 register
+      &addrsel0=Data.Long(D:&p_addrsel0)                ; set write disable bit:
+      data.set &p_addrsel0 %Long (&addrsel0|0x00000004) ; ADDRSEL0 |= 0x00000004      
+   )
+      
+   enddo
+;-----------------------------------------------------------------------------------------------------------------------

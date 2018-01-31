@@ -1,0 +1,16 @@
+---------------------------------------------------------------------
+File:      build.txt
+Content:   How to build this project
+Author:    FBE / florian.belser@sensor-technik.de
+---------------------------------------------------------------------
+
+Used Compiler:
+==============
+GNU GCC Compiler for PowerPc
+
+build:
+======
+Use Code::Blocks IDE to build the results.
+
+Alternativ, use the Makefile in the src folder
+

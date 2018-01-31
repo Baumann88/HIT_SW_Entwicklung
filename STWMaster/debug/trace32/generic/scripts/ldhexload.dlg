@@ -1,0 +1,51 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:    ldhex.dlg       
+;  Version: 21.07.2015, Baldauf                         Copyrights (c) 2013, STW
+;
+;  Description: Dialog definition for "load_hex.cmm"
+;
+;  Target:      TriCore generic
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+
+HEADER "Select data source for debug session"
+POS 1. 0. 70.
+TEXT "A HEX file has been configured as alternative data source!"
+POS 1. 1. 70.
+TEXT "(Selecting ""HexFile"" will load the HEX file data and uses debug symbols of the ELF file.)"
+
+POS 1. 2. 80.
+TEXT "ELF Filename:"
+ElfFileBox: EDIT "" ""
+
+POS 1. 4.
+TEXT "HEX Filename:"   
+HexFileBox: EDIT "" ""
+
+POS 1. 7. 10.
+DEFBUTTON "HEX File"
+(
+   &LoadSelection="LOAD HEX FILE"
+   CONTINUE
+)
+
+POS 15. 7. 10.
+DEFBUTTON "ELF File"
+(
+
+   &LoadSelection="LOAD ELF FILE"
+   CONTINUE
+)
+
+POS 1. 8. 40.
+cbDontWarn: CHECKBOX "Remember my decision for later reloads"
+(
+   &DontNotify=""     
+   
+   IF DIALOG.BOOLEAN(cbDontWarn)
+   (
+      &DontNotify="SUPPRESS NOTIFICATION"
+   )
+)
+

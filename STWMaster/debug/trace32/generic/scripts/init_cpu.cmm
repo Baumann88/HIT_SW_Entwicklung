@@ -1,0 +1,79 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:        init_cpu.cmm
+;  Version:     18.06.2012, Herb                                         Copyrights (c) 2012, STW
+;
+;  Description: do special CPU initialization after debugger established connection
+;
+;  Note:        global variable cpu_name must be set by caller
+;
+;  Target:      projects with TC1796, TC1797, TC1798 and TC1793 CPUs
+
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+   if ("&cpu_name"=="TC1796")                 ; target hardware initialization
+   (
+      Data.Set 0xF0000024 %Long 0x00000008    ; disable watchdog for programming
+
+      ; set break switch (set bit 8 in MCDBBS)
+      ; (only required when using a "Debug Interface"; otherwise extevt occurs)
+      data.set 0xF0000470 %Long 0xFF000100
+
+      ;=================================================================================================================
+      ; TC1796 bug fix: PMI line buffer not invalidated during CPU halt
+      ; the prolog code must point to a debug command (here: start of default trap vector table from int. boot code)
+
+      Data.PROLOG.TARGET 0xA0000100++0x7 0xA0000100++0x7
+      Data.PROLOG.ON
+      ; alternative: use only hardware breaks
+      ; break.select PROGRAM ONCHIP
+   )
+
+   if ("&cpu_name"=="TC1797")                 ; target hardware initialization
+   (
+      Data.Set 0xF00005F4 %Long 0x00000008    ; disable watchdog for programming
+   )
+
+   if (("&cpu_name"=="TC1793")||("&cpu_name"=="TC1798"))    ; target hardware initialization
+   (
+      Data.Set 0xF00005F4 %Long 0x00000008    ; disable watchdog for programming
+
+      ; enable debugger access to EBU configuration registers
+      ; this can only be done by the TriCore core and not by a debugger attached
+      ; via the Cerberus IO Client (e.g. JTAG/ DAP debugger)
+      ; see Errata EBU_TC.H010 for additional information
+        &patchAddress="P:0xB0000000"
+      ; step 1: save target content
+        &currentPC=Register(PC)
+        &currentA0=Register(A0)
+        &currentD0=Register(D0)
+        &currentD1=Register(D1)
+        &currentMemory=Data.Long(&patchAddress)
+      ; step 2: enable EBU
+        Register.Set A0 0xF8000004    ; EBU_MODCON
+        Register.Set D0 0x00000000    ; EBU_MODCON.ACCSINH=0
+        Data.Assemble &patchAddress   ld16.w D1,[A0]
+        Data.Assemble &patchAddress+2 st16.w [A0],D0
+        Register.Set PC &patchAddress
+        Step.Asm 2
+        &EBU_MODCON=Register(D1)
+      ; step 3: restore target content
+        Register.Set D1 &currentD1
+        Register.Set D0 &currentD0
+        Register.Set A0 &currentA0
+        Register.Set PC &currentPC
+        Data.Set &patchAddress %Long &currentMemory
+
+      PER.Set D:0xF8000004 %LONG (&EBU_MODCON&0x87FFFFFE) ; setup EBU_MODCON
+		
+      ; AudoMax devices have "debug monitor start address" register set to 0xA0000200
+      ; and Debug Context Save area pointer (DCX) set to 0xA0000400
+      ; These settings cause the MPU not to work within the 0xA0000000 address segment.
+      ; If no monitor software is used, we redirect these registers to 0x00 as we do want
+      ; MPU traps in debug mode.
+      PER.Set D:0xF7E1FD40 %LONG 0
+      PER.Set D:0xF7E1FD44 %LONG 0
+   )
+
+   enddo
+;-----------------------------------------------------------------------------------------------------------------------

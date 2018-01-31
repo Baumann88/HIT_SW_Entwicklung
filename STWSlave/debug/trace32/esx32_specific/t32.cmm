@@ -1,0 +1,86 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:          t32.cmm
+;  Version:       10.08.2015, Baldauf                                                       Copyrights (c) 2004, STW
+;
+;  Description:   ESX32 specific startup script
+;                 This script adds ESX32 specific commands to Trace32 menu
+;
+;  Target:        ESX32 ECU's
+;-----------------------------------------------------------------------------------------------------------------------
+
+
+
+menu.rp
+(
+   ADD
+   MENU
+   (
+      POPUP "&ESX32"
+      (
+         POPUP "STW RTOS"
+         (
+            MENUITEM "Extended Task List"
+            (
+               if Y.EXIST(x_os_init)
+               (
+                  Task.ListExt
+               )
+               else
+               (
+                  print "Error, STW Task system not present in application. STW RTOS pluging hasn't benn loaded!"
+               )
+            )
+            MENUITEM "Task List"
+            (
+               if Y.EXIST(x_os_init)
+               (
+                  Task.List
+               )
+               else
+               (
+                  print "Error, STW Task system not present in application. STW RTOS pluging hasn't benn loaded!"
+               )
+            )
+            MENUITEM "Task Stack"
+            (
+               if Y.EXIST(x_os_init)
+               (
+                  Task.Stack
+               )
+               else
+               (
+                  print "Error, STW Task system not present in application. STW RTOS pluging hasn't benn loaded!"
+               )
+            )
+            MENUITEM "Task Performance"
+            (
+               if Y.EXIST(x_os_init)
+               (
+                  Perf.ListTask
+               )
+               else
+               (
+                  print "Error, STW Task system not present in application. STW RTOS pluging hasn't benn loaded!"
+               )
+            )
+         )
+         POPUP "&Flash"
+         (
+            MENUITEM "Erase &Internal Flash"
+            (
+               local &result
+               DIALOG.YESNO "Too many erase cycles can damage the internal flash. Continue?"
+               entry &result
+               if &result
+               (
+                  flash.erase 0xA0020000--0xA0FFFFFF
+               )
+            )
+            MENUITEM "Erase &External Flash"
+            (
+               flash.erase 0xa1020000--(&ExtFlashSize+0xa0fffffc)
+            )
+         )      
+      ) 
+   )
+) 

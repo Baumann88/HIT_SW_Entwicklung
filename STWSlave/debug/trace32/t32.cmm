@@ -1,0 +1,32 @@
+;Default startup program for TRACE32
+;
+;This startup program can be modified according to your needs.
+
+ENTRY  &StartScript &FileName 
+
+; Define path settings that are passed to generic t32.cmm.
+; They will be used to find the generic script base path and the ecu specific extensions
+&script_path=".\generic"
+&ecu_ext=".\esx32_specific"
+
+&StartScript="&script_path\&StartScript"
+
+do &script_path\t32.cmm &StartScript &FileName &script_path &ecu_ext
+
+; Replace STW menu buttons with ones that have correct paths set
+menu.rp
+(
+   add
+   toolbar
+   (
+      separator
+      replace
+      toolitem "Reset" "RS,R" "run .\generic\reset.cmm"
+      replace
+      toolitem "Reload Program" "RL,X" "run .\restart.cmm"
+      replace
+      toolitem "Select Signed Hexfile" "[5 6x,4 xw5Sx,3 x2w4x2wx,3 xwx4 xwx,3 xwx4 xwx,3 xwx4 xwx,2 12y,2 y10Wy,2 y10Dy,2 y3Y4W3Yy,2 y3YD2WD3Yy,2 y3YD2WD3Yy,2 y3YD2WD3Yy,2 y2Y6O2Yy,3 y8Yy,4 8y]" "run .\generic\scripts\load_hex.cmm Select" 
+   )
+)
+
+enddo

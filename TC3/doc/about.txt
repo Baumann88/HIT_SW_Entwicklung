@@ -1,0 +1,45 @@
+/*---------------------------------------------------------------------
+File:      about.txt
+Content:   Information about this project
+Author:    FBE / florian.belser@sensor-technik.de
+---------------------------------------------------------------------*/
+
+----------------------------------------------------------
+Beeper example for ppc ECUs.
+Required hardware:
+- 1 * TC3
+For further information please refer to beeper.c----------------------------------------------------------
+CANopen example for ppc ECUs.
+Required hardware:
+- 1 * TC3
+- 1 * IOX 
+- 1 * DIOS/DIOM
+For further information please refer to CANopen.c
+----------------------------------------------------------
+LED example for ppc ECUs.
+Required hardware:
+- 1 * TC3
+For further information please refer to LED.c
+----------------------------------------------------------
+Motion sensor example for ppc ECUs.
+Required hardware:
+- 1 * TC3
+For further information please refer to motion.c
+----------------------------------------------------------
+Temperature sensor example for ppc ECUs.
+Required hardware:
+- 1 * TC3
+For further information please refer to temperature.c
+----------------------------------------------------------
+Input/Output example for ppc ECUs.
+Required hardware:
+- 1 * TC3
+For further information please refer to in_out.c
+----------------------------------------------------------
+CAN demo example for ppc ECUs.
+Required hardware:
+- 1 * TC3
+For further information please refer to CAN.c
+----------------------------------------------------------
+
+

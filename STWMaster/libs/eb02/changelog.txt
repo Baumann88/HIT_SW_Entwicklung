@@ -1,0 +1,153 @@
+---------------------------------------------------------------------
+File:      changelog.txt
+Generated with Changelog Generator Version: 1.05r0
+---------------------------------------------------------------------
+
+
+
+Version: Current release                                                             From Revision: 18505     27.04.2015
+========================================================================================================================
+BUG:      Add missing header file "x_eb.h" to xs02_out.h
+
+
+Version: v2_00r4                                                                     From Revision: 17176     16.06.2014
+========================================================================================================================
+BUG:      x02_sys_init returns always C_NO_ERR if being called more than once 
+
+
+Version: v2_00r3                                                                          Revision: 14632     13.06.2013
+========================================================================================================================
+BUG:      Reinitialization of incremental input pair fails.
+CHG:      x02_sys_init: return C_NO_ERR instead of C_CONFIG when called twice
+CHG:      Removed deprecated file x02_expboard.h
+
+
+Version: v2_00r0                                                                          Revision: 12493     05.10.2012
+========================================================================================================================
+BUG:      avoid access to element beyond array gat_x02_lookup
+NEW:      Added xs - API for eb02 expansion board 
+NEW:      implemented function x02_sys_get_component_info()
+
+
+Version: v1_04r0                                                                          Revision: 9633      26.07.2011
+========================================================================================================================
+CHG:      Removed result library for GCC 3.3.7.1 compiler because the support for this version is discontinued
+CHG:      Removed libeb02i.a library (link bios routines to intern flash). The same result can now be achieved by using the esx3xl_link_bios_intflash.ld linker script.
+CHG:      Removed support for obsolete EB02 variant 49542
+NEW:      Added *.hpp headers to result folder. These headers contain STW type and function declarations with namespaced STW SEPI functions and data types. This change will only affect C++ projects.
+
+
+Version: v1_03r1                                                                          Revision: 9286      30.03.2011
+========================================================================================================================
+BUG:      Activation of output error interrupts didn't work correctly (introduced in v1_02r0)
+CHG:      Changed device ID in eb02 library information struct from "Y_ESX3XL" to "Y_EB02" 
+
+
+Version: v1_02r0                                                                          Revision: 8963      15.02.2011
+========================================================================================================================
+CHG:      changed defines X02_OUT_01 and X02_OUT_CHANNEL from 12 to zero 
+
+
+Version: v1_01r0                                                                          Revision: 7178      11.06.2010
+========================================================================================================================
+CHG:      marked x02_init as deprecated
+NEW:      added x02_sys_init routine as replacement for x02_init
+
+
+Version: v1_00r1                                                                          Revision: 5861      04.02.2010
+========================================================================================================================
+BUG:      x02_set_counter didn't work for incremental decoder in variant 33022
+
+
+Version: v0_09r2                                                                          Revision: 4876      23.10.2009
+========================================================================================================================
+BUG:      fixed input threshold setting for var.49542 (introduced in v0_09r1) 
+
+
+Version: v0_09r1                                                                          Revision: 4852      20.10.2009
+========================================================================================================================
+BUG:      setting of threshold didn't work for variant 33022 (introduced in lib v0_09r0)
+BUG:      fixed bug, that caused x02_in_get_value to read an outdated value if no filter is configured 
+CHG:      Filter configuration for frequency inputs in variant 49542 is now set in 10ns steps 
+          (x02_in_init ou16_FilterConfig = 1 means 10ns) 
+
+
+Version: v0_09r0                                                                          Revision: 4762      08.10.2009
+========================================================================================================================
+BUG:      fixed bug, that can lead to faulty filtered digital input reading if more than one EB02 is installed
+CHG:      - renamed x02_lib_version.h to x02_lib.h
+          - changed parameter type of x02_get_lib_version from T_x_lib_version to T_x02_lib_version
+          - changed parameter type of x02_in_get_status from T_x_in_status to T_x02_in_status 
+NEW:      added libraries using CPU internal flash
+NEW:      Added support for expansion board variant 49542
+
+
+Version: v0_07r0                                                                          Revision: 3708      01.04.2009
+========================================================================================================================
+BUG:      Filter configuration for INCREMENTAL or COUNTER input types was overwritten by a random value during pin initialisation (most likely zero)
+BUG:      Variant 47194: removed 8 Bit filter limitation for INCREMENTAL and COUNTER input types
+CHG:      changed EB02 API to be SEPI conform:
+          - return types of API functions are now "sintn"
+          - some parameter types has been changed to native types (uintn, sintn)
+
+
+Version: v0_06r0                                                                          Revision: 3391      16.02.2009
+========================================================================================================================
+BUG:      x04_in.c: added workaround for unsolved CPU_TC.48 errata
+CHG:      function name x02_get_lib_version() into x02_lib_get_version()
+CHG:      renamed incremental decoder functions:
+          - x02_in_set_inc_threshold  to  x02_set_in_threshold
+          - x02_in_reset_inc          to  x02_in_set_counter   
+          Note:
+          Old function names are still working but will cause a "deprecated" compiler warning! 
+NEW:      Added support for variant 47194 with counter inputs 
+NEW:      added x02_in_get_counter as an alias for x02_in_get_value
+
+
+Version: v0_05r0                                                                          Revision: 2929      24.07.2008
+========================================================================================================================
+CHG:      complete library code optimized for speed and code size
+CHG:      changed lib version structure to common T_x_lib_version struct 
+CHG:      changed x02_get_lib_version interface to use pointer to T_x_lib_version structure 
+CHG:      compiled against libesx3xl.a v0_98r4; Previous esx3xl libraries are not compatible anymore 
+NEW:      added additional library information, that may be parsed by tools like Winflash 
+
+
+Version: v0_04r0                                                                          Revision: 2498      27.03.2008
+========================================================================================================================
+CHG:      Removed u8_AdditionalDataLen and acn_AdditionalData from T_x02_lib_version structure 
+
+
+Version: v0_03r0                                                                          Revision: 2412      17.03.2008
+========================================================================================================================
+BUG:      Incremental input channel 0: A/B signals are swapped to be consistent against incremental channel 1 and 2
+CHG:      Expansion board base addresses are now exported through gau32_expboard_base_addr from esx3xl api (v0_97r0)
+CHG:      modified for usage with library libesx3xl version 0.98r0 (or higher)
+NEW:      Added library version gt_x02_lib_version which will be placed in the .extlibinfo section of the output file.
+NEW:      Added function x02_get_lib_version to return the library information
+
+
+Version: v0_02r1                                                                          Revision: 1586      17.10.2007
+========================================================================================================================
+CHG:      compiled with esx3xl API v096r0
+CHG:      renamed x02_module to x02_expboard
+CHG:      removed appearance of "module" terminology in x02_ - header files
+
+
+Version: v0_02r0                                                                          Revision: 1570      16.10.2007
+========================================================================================================================
+CHG:      reworked output routines
+CHG:      compiled with esx3xl API v094r3
+CHG:      compiled with esx3xl API v095r0
+
+
+Version: y32m02_v0_01r0                                                                   Revision: 1064      27.06.2007
+========================================================================================================================
+CHG:      Cleaned up initialization of input pins
+CHG:      adapted to new esx3xl api library
+CHG:      Changes in incremental decoder initialization
+CHG:      changed adc scale factors
+NEW:      Initail import
+NEW:      calculation of incremental decoder threshold levels
+
+

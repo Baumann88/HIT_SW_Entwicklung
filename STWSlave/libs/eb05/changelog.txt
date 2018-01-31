@@ -1,0 +1,101 @@
+---------------------------------------------------------------------
+File:      changelog.txt
+Generated with Changelog Generator Version: 1.03r0
+---------------------------------------------------------------------
+
+
+
+Version: Current release                                                                  Revision: 16838     15.05.2014
+========================================================================================================================
+BUG:      Input pin X05_IN_01 is a regular digital input but is defined in the eb05 library to be an ETW (emergency trip wire) input which would 
+          provide pull-up/down devices (valid for eb05 variants 35771, 54319). Set correct hardware pin type (digital type without pull-up/down devices).
+CHG:      Included header x_eb.h in xs04.h and xs05.h
+
+
+Version: v2_01r0                                                                          Revision: 14637     14.06.2013
+========================================================================================================================
+CHG:      Removed deprecated files x04/x05/x08_expboard.h
+
+
+Version: v2_00r0                                                                          Revision: 12497     05.10.2012
+========================================================================================================================
+BUG:      fixed bug with current controlled outputs: corrected call to _adc_get_value function
+CHG:      deactivation of EB05 outputs at GND offset < -1,2V or > +2,0V
+CHG:      deactivation of EB08 outputs at GND offset < -1,2V
+NEW:      Added xs - API for eb04/5/8 expansion board 
+NEW:      implemented function x04_sys_get_component_info()
+NEW:      implemented function x05_sys_get_component_info()
+NEW:      implemented function x08_sys_get_component_info()
+
+
+Version: v1_04r0                                                                          Revision: 9640      27.07.2011
+========================================================================================================================
+CHG:      Removed result library for GCC 3.3.7.1 compiler because the support for this version is discontinued
+CHG:      Removed libeb0*i.a libraries (link bios routines to intern flash). The same result can now be achieved by using the esx3xl_link_bios_intflash.ld linker script.
+CHG:      Changed device ID in eb04/eb05/eb08 library information struct from "Y_ESX3XL" to "Y_EB04", "Y_EB05" and "Y_EB08"
+NEW:      Added support for current control output type (eb05 and eb08 only)
+NEW:      Added functions x04_sys_get_adc_filter and x04_sys_set_adc_filter
+NEW:      Added functions x05_sys_get_adc_filter and x05_sys_set_adc_filter
+NEW:      Added functions x08_sys_get_adc_filter and x08_sys_set_adc_filter
+NEW:      Added *.hpp headers to result folder. These headers contain STW type and function declarations with namespaced STW SEPI functions and data types. This change will only affect C++ projects.
+
+
+Version: v1_01r3                                                                          Revision: 7200      16.06.2010
+========================================================================================================================
+BUG:      input event callback: return correct channel number
+CHG:      reworked and added support for expansion board eb08
+CHG:      x04_ functions can no longer access eb05 hardware and vice versa
+CHG:      updated api according to sepi requirements
+
+
+Version: v1_00r4                                                                          Revision: 5930      15.02.2010
+========================================================================================================================
+BUG:      added range check for parameter ou16_Slot in function x04_out_reset_gnd_error
+
+
+Version: v1_00r0                                                                          Revision: 4982      06.11.2009
+========================================================================================================================
+BUG:      x04_out.c: added workaround for unsolved CPU_TC.48 errata
+BUG:      digital inputs configured with filter disabled will always return the raw input value
+CHG:      Changed eb04 and eb05 API to be SEPI conform 
+CHG:      - renamed x04_lib_version.h to x04_lib.h
+          - changed parameter type of x04_get_lib_version from T_x_lib_version to T_x04_lib_version
+          - changed parameter type of x04_in_get_status from T_x_in_status to T_x04_in_status 
+          - changed parameter type of x04_out_get_status from T_x_in_status to T_x04_out_status 
+          - renamed x05_lib_version.h to x05_lib.h
+          - changed parameter type of x05_get_lib_version from T_x_lib_version to T_x05_lib_version
+          - changed parameter type of x05_in_get_status from T_x_in_status to T_x05_in_status 
+          - changed parameter type of x05_out_get_status from T_x_in_status to T_x05_out_status 
+CHG:      x04/x05_in_get_status() returns now last filter setting
+CHG:      added parameter ou16_Channel to interface of x04_out_set_relay because of SEPI specification
+CHG:      removed deprecated prototype x04_get_lib_version
+NEW:      added libraries using CPU internal flash
+
+
+Version: v0_04r3                                                                          Revision: 3208      20.11.2008
+========================================================================================================================
+BUG:      Bugfix in x04_out_init_gnd_err: install callback only if module is initialised
+
+
+Version: v0_04r2                                                                          Revision: 3199      06.11.2008
+========================================================================================================================
+BUG:      fixed bug: using X05 voltage inputs
+BUG:      Bugfix in function x05_in_get_mux_value
+CHG:      function name x04/x05_get_lib_version() into x04/x05_lib_get_version()
+CHG:      x05 I/O functions use x04 functions with inline wrapper
+
+
+Version: v0_04r0                                                                          Revision: 2936      24.07.2008
+========================================================================================================================
+BUG:      fixed wrong scale values for EB05 current measurement 
+CHG:      complete library code optimized for speed and code size
+CHG:      ON/OFF outputs do not use PWM register any more but direct on/off control (no delayed output reaction)
+CHG:      function x0x_get_lib_version() returns an error code
+NEW:      Implemented timestamp check to ensure that eb04 and eb05 libraries have the same version 
+
+
+Version: v0_03r0                                                                          Revision: 2500      27.03.2008
+========================================================================================================================
+CHG:      Removed u8_AdditionalDataLen and acn_AdditionalData from T_x04_lib_version and T_x05_lib_version structure 
+
+

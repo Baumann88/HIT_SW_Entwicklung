@@ -1,0 +1,115 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:        detect_cpu.cmm
+;  Version:     03.05.2012, Herb                                         Copyrights (c) 2012, STW
+;
+;  Description: try to detect the target TriCore CPU
+;               returns the CPU name as string and the long value of the CHIP_ID register
+;
+;  Target:      TC1796, TC1797, TC1798, TC1793
+;-----------------------------------------------------------------------------------------------------------------------
+
+   local &cpu_name &chip_id
+
+   &cpu_name="TC1796"
+   &chip_id=0
+
+   system.cpu &cpu_name	        ; check TC1796 device
+   wait       500ms             ; Trace32 2014 Workaround: Wait time between sys.cpu and sys.up required for TC1796
+   
+   on error goto error_connect  ; install error handler for system.up errors
+
+connect:
+   system.up                    ; try to connect to CPU          
+
+   if (run())                   ; system is running, connection failed!
+   (
+      goto error_connect
+   )
+
+   if ("&cpu_name"=="TC1796")
+   (
+      ; read chip ID from AudoNG device
+      &chip_id=Data.Long(D:0xF0000074)      
+   )
+
+   if ("&cpu_name"=="TC1797")
+   (
+      ; read chip ID from AudoFuture or AudoMax device
+      &chip_id=Data.Long(D:0xF0000640)      
+   )
+
+   system.down
+
+   if (&chip_id!=0)
+   (
+      if ((&chip_id&0x0000FF00)==0x8A00)
+      (
+         &cpu_name="TC1796"
+      )
+      else if ((&chip_id&0x0000FF00)==0x9100)   ; TC1797, TC1197 (note: the value 0x9001 mentioned in the data sheets V1.1 and V1.2 is wrong!)
+      (
+         &cpu_name="TC1797"
+      )
+      else if ((&chip_id&0x0000FF00)==0x9700)   ; TC1793F
+      (
+         &cpu_name="TC1793"
+      )
+      else if ((&chip_id&0x0000FF00)==0xB100)   ; TC1793N
+      (
+         &cpu_name="TC1793"
+      )
+      else if ((&chip_id&0x0000FF00)==0x9800)   ; TC1798F
+      (
+         &cpu_name="TC1798"
+      )
+      else if ((&chip_id&0x0000FF00)==0xB000)   ; TC1798N
+      (
+         &cpu_name="TC1798"
+      )
+      else if ((&chip_id&0x0000FF00)==0xAC00)   ; TC1798S
+      (
+         &cpu_name="TC1798"
+      )
+      else
+      (
+         &cpu_name="unknown"
+         &chip_id=0
+      )   
+   )
+   else
+   (
+      &cpu_name="unknown"
+   )
+
+detect_end:
+   on error    ; remove error handler
+   print       ; clear any error message
+
+   enddo &cpu_name &chip_id
+;-----------------------------------------------------------------------------------------------------------------------
+
+error_connect:
+   system.down
+
+   if ("&cpu_name"=="TC1796")
+   (
+      ; try to connect to AudoFuture or AudoMax device
+      &cpu_name="TC1797"
+      on error goto cpu_not_supported
+      system.cpu &cpu_name
+      on error goto error_connect
+      goto connect
+   )
+   else
+   (
+      ; could not connect to TC1797
+      &cpu_name="unknown"
+      goto detect_end
+   )
+   
+cpu_not_supported:
+   &cpu_name="unknown"
+   goto detect_end
+   
+
+

@@ -1,0 +1,41 @@
+---------------------------------------------------------------------
+File:      history.txt
+Content:   Version history of this project
+Author:    FBE / florian.belser@sensor-technik.de
+---------------------------------------------------------------------
+
+When        Who             What                                                                              Version
+======================================================================================================================
+26.02.15    APP             Add dbus_ysignald_appl to simulate dbus signals for the signal daemon             v2.02r0
+                            Adapt the Motion_demo_application to the TC3G interface
+27.06.13    FBE             Update to newest                                                                  v2.01r1
+                            col2 v1_04r0
+                            CANOpen IOX lib v1_06r1
+                            CANOpen DIOS lib v1_03r1
+                            J1939 lib v1_02r1
+28.03.2013  FBE             update col2 lib to v1_03r0                                                        v2.01r0
+                            update iox  lib to v1_06r0
+                            update dios lib to v1_03r0
+                            update j1939 lib to v1_02r0
+11.07.2012  FBE             remove misra stuff                                                                v2.00r1
+18.11.2011  FBE             recompiled with uclibc                                                            v2.00r0
+13.09.2011  FBE             Bug fixed in CAN_example application (std and ext ids)                            
+14.01.2011  Sven Dittmer    Add J1939 examples                                                                v1.04r0
+13.01.2011  FBe             Update CANopen test application. (Remove SelectInput value)                       v1.03r0
+03.12.2010  DRA             add a example for handling USB storage devices                                    v1.02r0                                                                
+09.09.2010  DRA		       add an Walk-Through for GSM Point-To-Point Protocol connection                    v1.01r0
+10.08.2010  DRA	          demo applications:                                                                v1.00r0
+                              - Beeper (Generates different sounds)
+                              - CANopen (TC3 <-> IOX communication)
+                              - LED (Reads different LED colors)
+                              - Motion (Reads the status of the TC3 in 3D)
+                              - Temperature (Reads the temperature of TC3)
+                              - IN_OUT (Handles the In-/Outputs of the TC3)
+                              - CAN (Simple communication check for CAN 1/2)
+                              - SMS (Small SMS client which sends and receives Short Messages)
+23.03.2010  FBE             First Tag of the demo_applications examples                                       v0.01r0
+16.04.2010  FBE             add Input/Output demo application and CAN
+                            demo application to example                                                       xxxxx
+
+
+

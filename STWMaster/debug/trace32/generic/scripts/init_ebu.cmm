@@ -1,0 +1,85 @@
+;-----------------------------------------------------------------------------------------------------------------------
+;  Name:    init_ebu.cmm       
+;  Version: 07.09.2007, Herb                            Copyrights (c) 2007, STW
+;
+;  Description: initialize external bus interface with default values
+;               init address space for /CS0 (boot flash) 0xA0000000..0xA3FFFFFF (onchip flash will overlay this area)
+;               init address space for /CS1 (ext. RAM)   0xA4000000..0xA43FFFFF
+;               alternate (cached) address space will be enabled
+;
+;  Note:        global variable cpu_name must be set by caller
+;
+;  Target:      projects with TC1796, TC1797, TC1798 and TC1793 CPUs
+;-----------------------------------------------------------------------------------------------------------------------
+
+   ; Check if target specific EBU configuration shall be used
+   if (os.file(&EcuExtPath\init_ebu.cmm))
+   (
+      do &EcuExtPath\init_ebu.cmm
+      enddo
+   )
+
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; check, if this is a TC1796 CPU -> yes, init /CS0 and /CS1 address space
+   ;--------------------------------------------------------------------------------------------------------------------
+
+   if ("&cpu_name"=="TC1796")                ; TC1796 EBU /CS0, /CS1 init:
+   (
+      data.set  0xF8000010 %Long 0x000000E0  ; set SFR EBU_CON:
+                                             ; EBU is sole master, /CSGLB=/CS0, BUSCLK=LMBCLK
+                                             ; (TC1796: reserved bit26 should be written with 1!)  
+
+      data.set  0xF8000020 %Long 0x00100153  ; set SFR EBU_BFCON:
+                                             ; BFCLKO=LMBCLK/2, BFCLKO gated, no BFCLK feedback, feedback latency cycles = 0
+                                             ; TYPE0: burst buffer 8word, /WAIT bus, /ADV+/BAA delay, auto burst address wrapping
+                                             ; TYPE1: burst buffer 1word, /WAIT bus, /ADV+/BAA delay, auto burst address wrapping               
+
+      data.set  0xF80000C0 %Long 0x00922200  ; set SFR EBU_BUSCON0:
+                                             ; AALIGN=1, CMULT=1 (x4), DLOAD=1, PREFETCH=0, 32bit, demux, write enabled
+
+      data.set  0xF8000100 %Long 0x43181401  ; set SFR EBU_BUSAP0  (fLMB <= 150MHz):
+                                             ; DTACS=1, DTARDWR=0, WRRECOVC=4, RDRECOVC=2, DATAC=0,
+                                             ; BURSTC=0, WAITWRC=3, WAITRDC=4, CMDDELAY=1, ADDRC=1
+
+      data.set  0xF8000080 %Long 0xA0000813  ; set SFR EBU_ADDRSEL0:
+                                             ; /CS0=0xA0000000..0xA3FFFFFF, alt. segment=0x80000000
+
+      data.set  0xF80000C8 %Long 0x00800000  ; set SFR EBU_BUSCON1:
+                                             ; AALIGN=0, CMULT=0 (x1), DLOAD=0, PREFETCH=0, BCGEN=CS, 32bit, async, write enabled
+
+      data.set  0xF8000108 %Long 0x70D80000  ; set SFR EBU_BUSAP1:
+                                             ; DTACS=0, DTARDWR=0, WRRECOVC=0, RDRECOVC=0, DATAC=0,
+                                             ; BURSTC=0, WAITWRC=3, WAITRDC=3, CMDDELAY=0, ADDRC=1
+
+      data.set  0xF8000088 %Long 0xA4000833  ; set SFR EBU_ADDRSEL1:
+                                             ; /CS1=0xA4000000..0xA4FFFFFF, alt. segment=0x84000000
+   )
+
+   
+   ;--------------------------------------------------------------------------------------------------------------------
+   ; check, if this is a TC1797, TC1798 or TC1793 CPU -> yes, init /CS0 and /CS1 address space (fEBU_CLK <= 270MHz)
+   ;--------------------------------------------------------------------------------------------------------------------
+
+   if (("&cpu_name"=="TC1797")||("&cpu_name"=="TC1798")||("&cpu_name"=="TC1793"))
+   (
+      data.set  0xF8000004 %Long 0x000000E0  ; set SFR EBU_MODCON: EBU is sole master, async arbitration inputs
+
+      data.set  0xF8000028 %Long 0x40D30040  ; set SFR EBU_BUSRCON0: async 32Bit, demux, nowait, no control delay
+      data.set  0xF800002C %Long 0x80030403  ; set SFR EBU_BUSRAP0: address phase = 8x 3.7ns, command phase = 8x 3.7ns,
+                                             ; DTACS = 3x 3.7ns
+      data.set  0xF8000030 %Long 0x40D30000  ; set SFR EBU_BUSWCON0: async 32Bit, demux, nowait, no control delay
+      data.set  0xF8000034 %Long 0x8003B47F  ; set SFR EBU_BUSWAP0: address phase = 8x 3.7ns, command phase = 8x 3.7ns,
+                                             ; data hold = 11x 3.7ns, recovery = 7x 3.7ns, recovery between RD/WR = 15x 3.7ns
+      data.set  0xF8000018 %Long 0xA0000813  ; set SFR EBU_ADDRSEL0:
+                                             ; /CS0=0xA0000000..0xA3FFFFFF, alt. segment=0x80000000
+
+      data.set  0xF8000038 %Long 0x40C30040  ; set SFR EBU_BUSRCON1: async 32Bit, demux, nowait, no control delay
+      data.set  0xF800003C %Long 0x10030380  ; set SFR EBU_BUSRAP1: address phase = 1x 3.7ns, command phase = 7x 3.7ns 
+      data.set  0xF8000040 %Long 0x40C30000  ; set SFR EBU_BUSWCON1: async 32Bit, demux, nowait, no control delay
+      data.set  0xF8000044 %Long 0x10030200  ; set SFR EBU_BUSWAP1: address phase = 1x 3.7ns, command phase = 4x 3.7ns
+      data.set  0xF800001C %Long 0xA4000833  ; set SFR EBU_ADDRSEL1:
+                                             ; /CS1=0xA4000000..0xA4FFFFFF, alt. segment=0x80000000
+   )
+
+enddo
+;-----------------------------------------------------------------------------------------------------------------------

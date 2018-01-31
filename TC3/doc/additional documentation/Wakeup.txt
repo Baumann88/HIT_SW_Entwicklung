@@ -1,0 +1,173 @@
+This file contains basic information how to configure and activate the wake-up mechanism
+
+=========================================================================================
+
+   1.    General
+   2.    Wakeup via Motion sensor
+   3.    Wakeup via RTC
+   3.1   Wakeup after x seconds
+   3.2   Wakeup tomorrow 
+   4.    Wakeup vio IGN
+   5.    History
+   
+=========================================================================================
+
+
+1. General
+----------
+
+   For activating the wakeup mechanism, following scripts must be checked
+   and if necessary, changed:
+ 
+   - /etc/rc.d/rc.local
+   - /etc/rc.d/rc.conf
+
+   To configure the wakeup mechanism, following setting in the rc.conf
+   file are available:
+      
+   # Wakeup settings
+   #export MOTION_WAKEUP="yes"
+   #export RTC_WAKEUP="after_sec"
+   #export RTC_WAKEUP="tomorrow_at"
+
+   # in combination with "after_sec" RTC_WAKEUP_TIME holds the value in sec
+   # in combination with "tomorrow_at" RTC_WAKEUP_TIME hold the value in hhmmss
+   export RTC_WAKEUP_TIME=120
+
+   # Run time (minutes) after shutdown (ignation off)
+   # set the default value here or wakeup-reason dependend in
+   # default vale for ignition wakeup
+   export SD_RUN_TIME_IGN=1
+   # default value for motion wakeup
+   export SD_RUN_TIME_MOT=2
+   # default value ofr rtc wakeup
+   export SD_RUN_TIME_RTC=3
+   # file: wakeups or later in SD_RUN_TIME_FILE
+   export SD_RUN_TIME_FILE="/tmp/sdruntime"
+   
+   In the rc.local file, it's possible to execute own programs and scripts
+   for every single run mode (RTC, IGN, MOT, UNKNOWN)
+   
+   if [ "$1" = "start" ]
+   then
+      # If woken up by Ignition
+      if [ "$WAKEUP_REASON" = "IGN" ]
+      then
+         echo "IGN-Script..start"
+      fi
+      # if woken up by RTC
+      if [ "$WAKEUP_REASON" = "RTC" ]
+      then
+         echo "RTC-Script..start"
+      fi
+      #if woken up by Motion Sensor
+      if [ "$WAKEUP_REASON" = "MOT" ]
+      then
+         echo "MOT-Script..start"
+      fi
+      # else (UNKNOWN)
+      if [ "$WAKEUP_REASON" = "UNKNOWN" ]
+      then
+         echo "UNKNOWN-Script..start"
+      fi
+fi
+
+   
+2. Wakeup via Motion sensor
+---------------------------
+   
+   First edit the rc.conf file. 
+   To activate the motion wakeup mechanism set the "export MOTION_WAKEUP="yes""
+   You can also change the "staying alive" time for the Motion wakeup mechanism
+   by changing "export SD_RUN_TIME_MOT=2" (2 Minutes stay alive)
+   
+   Now we want to play "tata" on start up, if the TC3 wakeup mechanism was activated with the
+   Motion sensor. For this, edit the rc.local file
+   Include following line in the Motion Sensor section:
+   /usr/local/bin/tata.beep
+   Now the script section should look like the following clipping:
+   
+   #if woken up by Motion Sensor
+   if [ "$WAKEUP_REASON" = "MOT" ]
+   then
+      echo "MOT-Script..start"
+      /usr/local/bin/tata.beep
+   fi
+   
+   Switch off D+. 
+   If you hustle the TC3, it will wakeup automatically and play "tata".
+
+3.    Wakeup via RTC
+--------------------
+
+   The wakeup mechanism via RTC has to different modes. With the "Wakeup after x seconds"
+   mechanism, it's possible to specify the next power up time in seconds.
+   With the "Wakeup tomorrow" mechanism, it's possible to specify the time when the TC3
+   should wakeup every day.
+
+3.1   Wakeup after x seconds
+----------------------------
+
+   To activate the RTC wakeup mechanism set the #export RTC_WAKEUP="after_sec"
+   in the rc.conf file. Edit also the export RTC_WAKEUP_TIME to
+   export RTC_WAKEUP_TIME=60.
+   You can also change the "staying alive" time for the RTC wakeup mechanism
+   by changing "export SD_RUN_TIME_RTC=2" (2 Minutes stay alive) 
+   Now if you power off D+, the TC3 should wakeup after one 
+   minute by rtc and staying alive for 2 minutes.
+   
+   At least edit the rc.local file. The TC3 should flash the led red if the wakeup reason 
+   was the RTC
+   
+   Add following lines to the sector "RTC" in rc.local:
+   echo 1 > /sys/class/leds/status_led/brightness
+   
+   Now the script section should look like the following clipping:
+   
+   # if woken up by RTC
+   if [ "$WAKEUP_REASON" = "RTC" ]
+   then
+      echo 1 > /sys/class/leds/status_led/brightness
+      echo "RTC-Script..start"
+   fi
+   
+
+3.2   Wakeup tomorrow 
+--------------------
+
+   To activate the RTC wakeup mechanism set the #export RTC_WAKEUP="tomorrow_at"
+   in the rc.conf file. Edit also the export RTC_WAKEUP_TIME to
+   export RTC_WAKEUP_TIME=130000. This means, that tomorrow at 1 o'clock pm the TC3 wakes up 
+   
+4.    Wakeup via IGN
+--------------------
+
+   That's the normal case. If you turn on the D+ of the TC3, the wakeup mechanism with IGN will
+   be activated.
+   
+   Say we want to change the "stay alive" time to zero.
+   In this case, after switching off the D+, the TC3 should shutdown immediately.
+   First, change the "stay alive" time to
+   # default vale for ignition wakeup
+   export SD_RUN_TIME_IGN=0
+   
+   Add following lines to the sector "IGN" in rc.local:
+   echo 2 > /sys/class/leds/status_led/brightness
+   
+   Now the script section should look like the following clipping:
+
+   # If woken up by Ignition
+   if [ "$WAKEUP_REASON" = "IGN" ]
+   then
+      echo "IGN-Script..start"
+      echo 2 > /sys/class/leds/status_led/brightness
+   fi
+   
+5.    History
+-------------
+
+What					               Who		      When                    Version
+-------------------------------------------------------------------------------
+file created		               F. Belser	   28.04.2010	            v0_01r0
+
+

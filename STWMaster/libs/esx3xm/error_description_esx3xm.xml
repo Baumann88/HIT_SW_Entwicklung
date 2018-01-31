@@ -1,0 +1,2545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<errorlist>
+   <library name="ESX3XM LIB" version="2_03r1" id="0x465E">
+      <area name="x_can" description="CAN" index="0">
+         <function name="x_can_self_test" index="22">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>CAN module self test failed</comment>
+            </error>
+         </function>
+         <function name="x_can_bus_init" index="3">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou32_Bitrate out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>CAN bus ou16_Channel already initialized </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_can_bus_init_ext" index="23">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou32_Bitrate, ou16_SamplePoint or opu16_ActSamplePoint out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>CAN bus ou16_Channel already initialized </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_can_bus_get_sample_point" index="24">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>CAN interface not initialized</comment>
+            </error>
+         </function>
+         <function name="x_can_bus_close" index="1">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>internal BIOS error </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>CAN bus ou16_Channel not initialized </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_can_bus_get_status" index="2">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_can_bus_set_masks" index="8">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>CAN bus ou16_Channel not initialized </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>one or more parameter out of range</comment>
+            </error>
+         </function>
+         <function name="x_can_bus_lock" index="5">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>CAN bus ou16_Channel not initialized </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel or ou8_OnOff out of range</comment>
+            </error>
+         </function>
+         <function name="x_can_bus_init_failure_callback" index="4">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>CAN bus ou16_Channel not initialized </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_can_bus_change_busoff_time" index="0">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>one or more parameter out of range</comment>
+            </error>
+         </function>
+         <function name="x_can_bus_perform_busoff_recovery" index="6">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>CAN bus ou16_Channel not initialized </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_init" index="14">
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>parameter opt_Config-&gt;u8_MsgType invalid </comment>
+            </error>
+            <error index="4">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>not enough buffer memory or not enough CAN message objects </comment>
+            </error>
+            <error index="5">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>CAN bus ou16_Channel not initialized </comment>
+            </error>
+            <error index="6">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range or parameter oppv_Handle == NULL</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_init_gateway" index="15">
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>parameter opt_Config-&gt;t_GatewayControl.un_RTRMode invalid </comment>
+            </error>
+            <error index="3">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>not enough buffer memory or not enough CAN message objects </comment>
+            </error>
+            <error index="4">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>CAN bus ou16_ChannelSrc or ou16_ChannelDst not initialized </comment>
+            </error>
+            <error index="5">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_ChannelSrc or ou16_ChannelDst out of range or parameter oppv_Handle == NULL</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_close" index="10">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>error in low level BIOS function </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_get_msg" index="12">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>no message available (message object empty) </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>message object is not of type X_CAN_OBJ_TYPE_RX </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_send_msg" index="17">
+            <error index="0">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>TX buffer full, this TX message lost </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>message object is not of type X_CAN_OBJ_TYPE_TX or X_CAN_OBJ_TYPE_TX_RTR </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_set_auto_response" index="19">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>message object is not of type X_CAN_OBJ_TYPE_TX_RTR 
+                           </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle not valid or parameter ou8_OnOff out of range</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_send_rtr_req" index="18">
+            <error index="1">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>message object is not empty (unprocessed RX data) </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>message object is not of type X_CAN_OBJ_TYPE_RX or message object is locked </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_get_buf_count" index="11">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>message type not valid (e.g. not applicable on gateway objects) </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_clear_buf" index="9">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>message type not valid (not applicable on gateway objects) </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_get_status" index="13">
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_lock" index="16">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle not valid or ou8_OnOff out of range</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_set_filter" index="20">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>message object type not valid (not applicable on a TX object) </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_can_obj_set_pause" index="21">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>message object is not of type X_CAN_OBJ_TYPE_TX </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle not valid or ou16_Pause out of range</comment>
+            </error>
+         </function>
+      </area>
+      <area name="x_eep" description="EEPROM" index="1">
+         <function name="x_eep_read" index="1">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameters opu8_Data or ou32_Address / u32_Count out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>system not initialized, yet -&gt; no eeprom access possible </comment>
+            </error>
+            <error index="2">
+               <code name="C_BUSY" define="-4"/>
+               <comment>EEPROM communication channel not available (occupied by another task) </comment>
+            </error>
+            <error index="3">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>EEPROM communication error (hardware error)</comment>
+            </error>
+         </function>
+         <function name="x_eep_write" index="2">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameters opu8_Data or ou32_Address / u32_Count out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>system not initialized, yet -&gt; no eeprom access possible </comment>
+            </error>
+            <error index="2">
+               <code name="C_BUSY" define="-4"/>
+               <comment>EEPROM communication channel not available (occupied by another task) </comment>
+            </error>
+            <error index="3">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>EEPROM communication error (hardware error)</comment>
+            </error>
+         </function>
+         <function name="x_eep_flush" index="0">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>EEPROM communication error (hardware error)</comment>
+            </error>
+         </function>
+         <function name="x_eep_get_status" index="3">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameters ou32_Address or u32_Size out of range</comment>
+            </error>
+         </function>
+      </area>
+      <area name="x_fl" description="Flashloader" index="11">
+         <function name="x_fl_get_version" index="1">
+            <error index="0">
+               <code name="C_UNKNOWN_ERR" define="-1"/>
+               <comment>no valid flashloader found</comment>
+            </error>
+         </function>
+         <function name="x_fl_get_num_interfaces" index="2"/>
+         <function name="x_fl_get_interface_parameters" index="3">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>interface number out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>EEPROM communication error </comment>
+            </error>
+            <error index="2">
+               <code name="C_CHECKSUM" define="-11"/>
+               <comment>checksum error while reading system eeprom data</comment>
+            </error>
+         </function>
+         <function name="x_fl_set_interface_parameters" index="4">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>one or more parameter(s) out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>EEPROM communication error </comment>
+            </error>
+            <error index="2">
+               <code name="C_CHECKSUM" define="-11"/>
+               <comment>checksum error while reading system eeprom data</comment>
+            </error>
+         </function>
+         <function name="x_fl_get_num_checksum_blocks" index="5"/>
+         <function name="x_fl_get_checksum_block_addresses" index="6">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>block number out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>EEPROM communication error </comment>
+            </error>
+            <error index="2">
+               <code name="C_CHECKSUM" define="-11"/>
+               <comment>checksum error while reading system eeprom data</comment>
+            </error>
+         </function>
+         <function name="x_fl_set_checksum_block_addresses" index="7">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>one or more parameter(s) out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>EEPROM communication error </comment>
+            </error>
+            <error index="2">
+               <code name="C_CHECKSUM" define="-11"/>
+               <comment>checksum error while reading system eeprom data</comment>
+            </error>
+         </function>
+         <function name="x_fl_get_checksum_block_check" index="8">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>block number out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>EEPROM communication error </comment>
+            </error>
+            <error index="2">
+               <code name="C_CHECKSUM" define="-11"/>
+               <comment>checksum error while reading system eeprom data </comment>
+            </error>
+            <error index="3">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>Flashloader doesn't support block checksums</comment>
+            </error>
+         </function>
+         <function name="x_fl_set_checksum_block_check" index="9">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>block number or OnOff parameter out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>EEPROM communication error </comment>
+            </error>
+            <error index="2">
+               <code name="C_CHECKSUM" define="-11"/>
+               <comment>checksum error while reading system eeprom data </comment>
+            </error>
+            <error index="3">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>Flashloader doesn't support block checksums</comment>
+            </error>
+         </function>
+         <function name="x_fl_get_finger_print" index="10">
+            <error index="0">
+               <code name="C_CHECKSUM" define="-11"/>
+               <comment>checksum error while reading system EEPROM data </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>error while reading from system EEPROM </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>one or more BCD coded value(s) out of range </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>no valid value(s) for date or time </comment>
+            </error>
+         </function>
+         <function name="x_fl_get_content_changed_flag" index="11">
+            <error index="0">
+               <code name="C_CHECKSUM" define="-11"/>
+               <comment>list checksum error: default value returned </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>Flashloader doesn't support setting of content changed flag </comment>
+            </error>
+         </function>
+         <function name="x_fl_perform_signature_block_check" index="12">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>one or more parameter(s) out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>signature block not recognized or block version not supported </comment>
+            </error>
+            <error index="2">
+               <code name="C_CHECKSUM" define="-11"/>
+               <comment>signature block check error (calculated checksum != checksum stored in block) </comment>
+            </error>
+         </function>
+         <function name="x_fl_reset_content_changed_flag" index="13">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>error while writing to system EEPROM </comment>
+            </error>
+            <error index="1">
+               <code name="C_CHECKSUM" define="-11"/>
+               <comment>list checksum error: list has been restored with default values </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>Flashloader doesn't support setting of content changed flag </comment>
+            </error>
+         </function>
+      </area>
+      <area name="x_in" description="Inputs" index="2">
+         <function name="x_in_init" index="5">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_FilterConfig out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>voltage gain mismatch inside input group (can't mix digital with 5V or 10V analog inputs) </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Type out of range </comment>
+            </error>
+            <error index="4">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel or ou16_InputCircuit out of range</comment>
+            </error>
+         </function>
+         <function name="x_in_get_value" index="4">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_in_get_raw_value" index="2">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_in_get_status" index="3">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_in_get_frequency" index="1">
+            <error index="1">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>input signal frequency out of range (frequency to high or to low) </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>ou16_Channel is not configured as X_IN_TYPE_FREQUENCY or X_IN_TYPE_INCREMENTAL </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_in_get_duty_cycle" index="0">
+            <error index="1">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>input signal frequency out of range (frequency to high or to low) </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>ou16_Channel is not configured as X_IN_TYPE_FREQUENCY or X_IN_TYPE_INCREMENTAL </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_in_get_counter" index="6">
+            <error index="0">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>counter overflow detected </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>ou16_Channel is not configured as digital input type </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_in_set_counter" index="7">
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>ou16_Channel is not configured as digital input type </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_in_get_counter_direction" index="8">
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>ou16_Channel is not configured as type X_IN_TYPE_INCREMENTAL </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range (channel doesn't exist)</comment>
+            </error>
+         </function>
+         <function name="x_t_in_init_frequency_avg" index="9">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>any parameter out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>hardware not configured correctly</comment>
+            </error>
+         </function>
+         <function name="x_t_in_get_frequency_avg" index="10">
+            <error index="1">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>input signal frequency out of range (frequency to high or to low) </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>ou16_Channel is not configured as average frequency measurement channel </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+      </area>
+      <area name="x_mpu" description="MPU" index="12">
+         <function name="x_mpu_init" index="0">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>MPU was already configured </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opu32_ProtectedMemClass out of range </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>memory class could not be initialized</comment>
+            </error>
+         </function>
+         <function name="x_mpu_get_status" index="1"/>
+      </area>
+      <area name="x_os" description="Task System" index="3">
+         <function name="x_os_init" index="4">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_MemClass out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>task system already initialized or wrong MemClass</comment>
+            </error>
+         </function>
+         <function name="x_os_start" index="9">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>task system not initialized </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_install_task" index="5">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Priority out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>task system not initialized or already running </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>task priority in use or not enough memory to create task or opr_Task == NULL </comment>
+            </error>
+            <error index="3">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_install_task_ext" index="6">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Priority out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>task priority in use or not enough memory to create task or opr_Task == NULL </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_check_task_stack" index="10">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function not called from task level</comment>
+            </error>
+         </function>
+         <function name="x_os_check_task_stack_ext" index="33">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>task handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_os_set_task_timer" index="8">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_set_task_timer_ext" index="7">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>task handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_os_suspend_task" index="30">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>task handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_os_resume_task" index="31">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>task handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_os_delete_task" index="32">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>task handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_mbox_init" index="11">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to mailbox object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_mbox_close" index="12">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to mailbox object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_WARN" define="-2"/>
+               <comment>not deleted: task(s) are waiting for this mailbox </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_mbox_get_message" index="13">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to mailbox object or oppv_Message invalid </comment>
+            </error>
+            <error index="1">
+               <code name="C_BUSY" define="-4"/>
+               <comment>failed to acquire mailbox, timeout occurred </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler or inside critical section</comment>
+            </error>
+         </function>
+         <function name="x_os_mbox_send_message" index="14">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to mailbox object or oppv_Message invalid </comment>
+            </error>
+            <error index="1">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>mailbox overflow, message not delivered</comment>
+            </error>
+         </function>
+         <function name="x_os_mutex_init" index="15">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to mutex object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_mutex_close" index="16">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to mutex object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_WARN" define="-2"/>
+               <comment>not deleted: task(s) are waiting for this mutex </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_mutex_get" index="17">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to mutex object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_BUSY" define="-4"/>
+               <comment>mutex not available, timeout occurred </comment>
+            </error>
+            <error index="2">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>mutex recursive call overflow </comment>
+            </error>
+            <error index="3">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler or inside critical section</comment>
+            </error>
+         </function>
+         <function name="x_os_mutex_release" index="18">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to mutex object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function not called from mutex owner</comment>
+            </error>
+         </function>
+         <function name="x_os_sema_init" index="19">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to semaphore object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_sema_close" index="20">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to semaphore object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_WARN" define="-2"/>
+               <comment>not deleted: task(s) are waiting for this semaphore </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_sema_get" index="21">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to semaphore object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_BUSY" define="-4"/>
+               <comment>failed to acquire semaphore, timeout occurred </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler or inside critical section</comment>
+            </error>
+         </function>
+         <function name="x_os_sema_release" index="22">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to semaphore object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>semaphore release counter overflow</comment>
+            </error>
+         </function>
+         <function name="x_os_signal_init" index="23">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to signal object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_signal_close" index="24">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to signal object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_WARN" define="-2"/>
+               <comment>not deleted: task(s) are waiting for this signal </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="x_os_signal_wait_for" index="25">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to signal object or ou16_Mode not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_BUSY" define="-4"/>
+               <comment>failed to receive signal, timeout occurred </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler or inside critical section</comment>
+            </error>
+         </function>
+         <function name="x_os_signal_send" index="26">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to signal object not valid</comment>
+            </error>
+         </function>
+      </area>
+      <area name="x_out" description="Outputs" index="4">
+         <function name="x_out_init" index="2">
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Type out of range </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel or os32_MaxValue out of range</comment>
+            </error>
+         </function>
+         <function name="x_out_set_control_parameters" index="6">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>one ore more members of opt_Parameters not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>output not initialized as type X_OUT_TYPE_CONTROL_CURRENT </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_out_get_control_parameters" index="7">
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>output not initialized as type X_OUT_TYPE_CONTROL_CURRENT </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_out_set_value" index="5">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter os32_Value out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_out_set_frequency" index="4">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou32_Frequency out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_out_get_status" index="1">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_out_get_current" index="0">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_out_reset_error" index="3">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>output error recovery time not elapsed</comment>
+            </error>
+         </function>
+         <function name="x_out_set_value_ramping" index="8">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>output not in a defined state </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter os32_Value, ou32_DeltaOutput or ou32_DeltaTime out of range</comment>
+            </error>
+         </function>
+         <function name="x_out_relay_init" index="20">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel or opt_Config out of range</comment>
+            </error>
+         </function>
+         <function name="x_out_relay_set" index="21">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou8_OnOff out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>relay cannot be enabled due to a pending error flag</comment>
+            </error>
+         </function>
+         <function name="x_out_relay_set_all" index="22">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou8_OnOff out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>at least one relay has detected an error </comment>
+            </error>
+         </function>
+         <function name="x_out_relay_get_status" index="23">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_out_relay_reset_error" index="24">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>unable to reset all error flags (at least one error is still pending)</comment>
+            </error>
+         </function>
+      </area>
+      <area name="x_ser" description="RS232" index="5">
+         <function name="x_ser_init" index="6">
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou32_Bitrate out of range </comment>
+            </error>
+            <error index="4">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Mode out of range </comment>
+            </error>
+            <error index="5">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_StopBits out of range </comment>
+            </error>
+            <error index="6">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_close" index="2">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_set_bitrate" index="10">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou32_Bitrate out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>RS232 channel not initialized </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_get_status" index="4">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_init_rx_buf" index="7">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>RS232 channel not initialized </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>not enough memory available </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_init_tx_buf" index="8">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>RS232 channel not initialized </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>not enough memory available </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_get_rx_buf_count" index="3">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>RS232 channel not initialized </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_get_tx_buf_count" index="5">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>RS232 channel not initialized </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_clear_rx_buf" index="0">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>RS232 channel not initialized </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_clear_tx_buf" index="1">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>RS232 channel not initialized </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_read" index="9">
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>RX buffer contains less than ou16_Count bytes </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>RS232 channel not initialized </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_write" index="11">
+            <error index="1">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>TX buffer space less than ou16_Count bytes </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>RS232 channel not initialized </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_ser_write_string" index="12">
+            <error index="1">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>TX buffer space less than length of opcn_String </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>RS232 channel not initialized </comment>
+            </error>
+            <error index="3">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+      </area>
+      <area name="x_ssv" description="Supervisor" index="8">
+         <function name="x_ssv_init" index="0">
+            <error index="0">
+               <code name="C_BUSY" define="-4"/>
+               <comment>SPI bus is busy (occupied by another task) </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>configuration data u8_UEmin or u8_UEmax out of range </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>configuration data u16_WDmin or u16_WDmax out of range </comment>
+            </error>
+            <error index="3">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>SSV communication error</comment>
+            </error>
+         </function>
+         <function name="x_ssv_get_status" index="1">
+            <error index="0">
+               <code name="C_BUSY" define="-4"/>
+               <comment>SPI bus is busy (occupied by another task) </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>SSV communication error</comment>
+            </error>
+         </function>
+         <function name="x_ssv_trigger" index="2">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_TriggerType out of range</comment>
+            </error>
+         </function>
+         <function name="x_ssv_reset" index="3"/>
+         <function name="x_ssv_set_trigger" index="4">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_TriggerState out of range</comment>
+            </error>
+         </function>
+      </area>
+      <area name="x_sys" description="System" index="6">
+         <function name="x_sys_init" index="18">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>system already initialized </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>system initialization failed </comment>
+            </error>
+            <error index="2">
+               <code name="C_WARN" define="-2"/>
+               <comment>verification of user EEPROM data failed</comment>
+            </error>
+         </function>
+         <function name="x_sys_get_system_information" index="19"/>
+         <function name="x_sys_get_component_info" index="22">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou16_Component out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>system initialization failed; version could not be read</comment>
+            </error>
+         </function>
+         <function name="x_sys_close" index="0">
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>system not initialized</comment>
+            </error>
+         </function>
+         <function name="x_sys_stay_alive" index="13">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou8_OnOff out of range</comment>
+            </error>
+         </function>
+         <function name="x_sys_trigger_cpu_watchdog" index="14">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_WDTimeout out of range</comment>
+            </error>
+         </function>
+         <function name="x_sys_set_all_relays" index="8">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou8_OnOff out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>at least one relay has detected an error</comment>
+            </error>
+         </function>
+         <function name="x_sys_set_relay" index="11">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou8_OnOff out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>relay cannot be enabled due to a pending error flag</comment>
+            </error>
+         </function>
+         <function name="x_sys_get_ignition" index="20"/>
+         <function name="x_sys_init_off_reaction" index="21"/>
+         <function name="x_sys_set_led" index="10">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>any parameter out of range</comment>
+            </error>
+         </function>
+         <function name="x_sys_set_beeper" index="9">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>any parameter out of range</comment>
+            </error>
+         </function>
+         <function name="x_sys_set_sensor_supply" index="12">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>any parameter out of range</comment>
+            </error>
+         </function>
+         <function name="x_sys_get_adc_value" index="3">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_sys_get_adc_value_scaled" index="4">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_sys_get_adc_raw_value" index="16">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_sys_get_adc_raw_value_scaled" index="17">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_sys_set_adc_filter" index="7">
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_sys_get_adc_filter" index="2">
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+         <function name="x_sys_get_temperature" index="6">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter ou16_Channel out of range</comment>
+            </error>
+         </function>
+      </area>
+      <area name="x_tim" description="Timers" index="9">
+         <function name="x_tim_init" index="0">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou32_Priority out of range or opr_TimerCallback == NULL or oppv_Handle == NULL </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>requested timer resource not available</comment>
+            </error>
+         </function>
+         <function name="x_tim_close" index="1">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Handle not valid</comment>
+            </error>
+         </function>
+         <function name="x_tim_set" index="2">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou32_DelayTime or ou32_CycleTime out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Handle not valid</comment>
+            </error>
+         </function>
+      </area>
+      <area name="x_uti" description="Utilities" index="7">
+         <function name="x_uti_calc_crc_tricore" index="0">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>pu32_Data is not a valid 32bit word address</comment>
+            </error>
+         </function>
+         <function name="x_uti_calc_crc_16" index="1"/>
+         <function name="x_uti_calc_crc_stw" index="2"/>
+      </area>
+      <area name="xs_am" description="Access Manager" index="114">
+         <function name="xs_am_init" index="0">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>Access Manager already initialized </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>No access rights for this function</comment>
+            </error>
+         </function>
+         <function name="xs_am_module_set_permission" index="1">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>Module ID out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>Access Manager not initialized </comment>
+            </error>
+            <error index="2">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>No access rights for this function</comment>
+            </error>
+         </function>
+         <function name="xs_am_function_set_permission" index="3">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>Module ID out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>Function ID out of range </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>Access Manager not initialized </comment>
+            </error>
+            <error index="3">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>No access rights for this function</comment>
+            </error>
+         </function>
+         <function name="xs_am_datapool_set_permission" index="4">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>Datapool Channel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>access manager not initialized </comment>
+            </error>
+            <error index="2">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>No access rights for this function</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_can" description="CAN Safety Layer" index="100">
+         <function name="xs_can_obj_event_mask_set" index="26">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>Handle is not valid</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_get_event_handle" index="23">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>no object has raised an event </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_bus_get_buswarn_channel" index="24">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>no channel has raised an recovery event </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_bus_get_busoff_channel" index="25">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>no channel has raised an recovery event </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_self_test" index="22">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_bus_init" index="3">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_bus_init_ext" index="27">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_bus_get_sample_point" index="28"/>
+         <function name="xs_can_bus_close" index="1">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_bus_set_masks" index="8">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_bus_lock" index="5">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_bus_init_failure_callback" index="4">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>parameter opv_Signal invalid </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_bus_change_busoff_time" index="0">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_bus_perform_busoff_recovery" index="6">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_init" index="14">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Signal handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_init_gateway" index="15">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Signal handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_close" index="10">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_get_msg" index="12">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_send_msg" index="17">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_set_auto_response" index="19">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_send_rtr_req" index="18">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_clear_buf" index="9">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_get_status" index="13">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_lock" index="16">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_set_filter" index="20">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_can_obj_set_pause" index="21">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_dp" description="Data Pool" index="113">
+         <function name="xs_dp_init" index="0">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>channel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>MPU not initialized or MPU XS - mode not configured </comment>
+            </error>
+            <error index="2">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou32_MemClass not protected by MPU or ou32_Size exceeds memory that is available in ou32_Memclass</comment>
+            </error>
+         </function>
+         <function name="xs_dp_get_instance" index="1">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou16_Channel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>datapool channel not initialized</comment>
+            </error>
+         </function>
+         <function name="xs_dp_write" index="2">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>data pool channel out of range or ou32_NumOfBytes == 0 </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Dest doesn't point to data pool memory address </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="3">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no write permission to data pool from this task</comment>
+            </error>
+         </function>
+         <function name="xs_dp_read" index="3">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>one or more parameter out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_eb" description="Expansion Board Safety Layer" index="115">
+         <function name="xs_eb_enable_noninterfering_access" index="0">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>slot number out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>Expansion Board FPGA SW does not support non-interfering access</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_eep" description="EEPROM Safety Layer" index="101">
+         <function name="xs_eep_write" index="2">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_eep_flush" index="0">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_err" description="Error Handler" index="110">
+         <function name="xs_err_get_err_event" index="1">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>no data to read </comment>
+            </error>
+            <error index="1">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>overflow in error fifo </comment>
+            </error>
+            <error index="2">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task </comment>
+            </error>
+            <error index="3">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>error handler not initialized</comment>
+            </error>
+         </function>
+         <function name="xs_err_init" index="0">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>signal handle pointer not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>cannot allocate memory for error fifo</comment>
+            </error>
+         </function>
+         <function name="xs_err_close" index="2">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access permission from this task</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_fl" description="Flashloader Safety Layer" index="111">
+         <function name="xs_fl_set_interface_parameters" index="4">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_fl_set_checksum_block_addresses" index="7">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_fl_set_checksum_block_check" index="9">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task</comment>
+            </error>
+         </function>
+         <function name="xs_fl_reset_content_changed_flag" index="13">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no execution permission for this task </comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_in" description="Inputs Safety Layer" index="102">
+         <function name="xs_in_get_event_channel" index="9">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>none of the masked channels is signaling an event </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_in_init" index="5">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Signal is invalid </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou16_Channel out of range </comment>
+            </error>
+            <error index="2">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_in_set_counter" index="7">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_t_in_init_frequency_avg" index="10">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_mpu" description="MPU Safety Layer" index="112">
+         <function name="xs_mpu_init" index="0">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou32_Size1By &gt; 0, but opu32_ProtectedMemClass is NULL </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>MPU was already configured </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>protected memory class could not be allocated</comment>
+            </error>
+         </function>
+         <function name="xs_mpu_get_mem_protection" index="1">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>object start address and size caused 32-bit address overflow</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_os" description="Task System Safety Layer" index="103">
+         <function name="xs_os_init" index="4">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>MPU is not initialized</comment>
+            </error>
+         </function>
+         <function name="xs_os_install_task_ext" index="6">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_os_set_task_timer_ext" index="7">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_os_suspend_task" index="30">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_os_resume_task" index="31">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_os_delete_task" index="32">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_os_set_task_safety_level" index="2">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle or ou16_SafetyLevel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>OS is not using a protected memclass </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="3">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>internal error: can't extend to protected memory range </comment>
+            </error>
+            <error index="4">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_os_get_task_safety_level" index="3">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Handle out of range or function not being called from task</comment>
+            </error>
+         </function>
+         <function name="xs_os_mbox_init" index="11">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>cannot allocate memory for mailbox object</comment>
+            </error>
+         </function>
+         <function name="xs_os_mbox_init_unprotected" index="35">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>cannot allocate memory for mailbox object</comment>
+            </error>
+         </function>
+         <function name="xs_os_mbox_close" index="12">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Mailbox handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="3">
+               <code name="C_WARN" define="-2"/>
+               <comment>not deleted: task(s) are waiting for this mailbox</comment>
+            </error>
+         </function>
+         <function name="xs_os_mbox_get_message" index="13">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Mailbox handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="3">
+               <code name="C_BUSY" define="-4"/>
+               <comment>failed to acquire mailbox with timeout</comment>
+            </error>
+         </function>
+         <function name="xs_os_mbox_send_message" index="14">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Mailbox handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="3">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>mailbox overflow, message not delivered</comment>
+            </error>
+         </function>
+         <function name="xs_os_mutex_init" index="15">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>cannot allocate memory for mutex object</comment>
+            </error>
+         </function>
+         <function name="xs_os_mutex_init_unprotected" index="36">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>cannot allocate memory for mutex object</comment>
+            </error>
+         </function>
+         <function name="xs_os_mutex_close" index="16">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Mutex handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="xs_os_mutex_get" index="17">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>pointer to mutex object not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements </comment>
+            </error>
+            <error index="2">
+               <code name="C_BUSY" define="-4"/>
+               <comment>mutex not available, timeout occured </comment>
+            </error>
+            <error index="3">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>mutex recursive call overflow </comment>
+            </error>
+            <error index="4">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="xs_os_mutex_release" index="18">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Mutex handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="xs_os_sema_init" index="19">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>cannot allocate memory for signal object</comment>
+            </error>
+         </function>
+         <function name="xs_os_sema_init_unprotected" index="37">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>cannot allocate memory for signal object</comment>
+            </error>
+         </function>
+         <function name="xs_os_sema_close" index="20">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Semaphore handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements </comment>
+            </error>
+            <error index="2">
+               <code name="C_WARN" define="-2"/>
+               <comment>not deleted: task(s) are waiting for this semaphore </comment>
+            </error>
+            <error index="3">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="xs_os_sema_get" index="21">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Semaphore handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="3">
+               <code name="C_BUSY" define="-4"/>
+               <comment>failed to acquire semaphore with timeout</comment>
+            </error>
+         </function>
+         <function name="xs_os_sema_release" index="22">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Semaphore handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="3">
+               <code name="C_OVERFLOW" define="-6"/>
+               <comment>semaphore release counter overflow</comment>
+            </error>
+         </function>
+         <function name="xs_os_signal_init" index="23"/>
+         <function name="xs_os_signal_init_unprotected" index="38">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>cannot allocate memory for signal object</comment>
+            </error>
+         </function>
+         <function name="xs_os_signal_close" index="24">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Signal handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements </comment>
+            </error>
+            <error index="2">
+               <code name="C_WARN" define="-2"/>
+               <comment>not deleted: task(s) are waiting for this signal </comment>
+            </error>
+            <error index="3">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler</comment>
+            </error>
+         </function>
+         <function name="xs_os_signal_wait_for" index="25">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Signal handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements </comment>
+            </error>
+            <error index="2">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="3">
+               <code name="C_BUSY" define="-4"/>
+               <comment>failed to receive signal with timeout</comment>
+            </error>
+         </function>
+         <function name="xs_os_signal_send" index="26">
+            <error index="0">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>opv_Signal handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>safety level of task doesn't meet objects requirements</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_out" description="Outputs Safety Layer" index="104">
+         <function name="xs_out_get_event_channel" index="11">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>no channel has raised an event </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights for this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_get_overcurrent_channel" index="9">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>no channel has raised an overcurrent </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights for this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_get_recovery_channel" index="10">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>no channel has raised an recovery event </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights for this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_init" index="1">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Signal handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou16_Channel out of range </comment>
+            </error>
+            <error index="2">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_init_unprotected" index="2">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Signal handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou16_Channel out of range </comment>
+            </error>
+            <error index="2">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_set_control_parameters" index="6">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou16_Channel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>attempt to access a safety output from non-interfering task </comment>
+            </error>
+            <error index="3">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_set_value" index="5">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou16_Channel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>attempt to access a safety output from non-interfering task </comment>
+            </error>
+            <error index="3">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_set_frequency" index="4">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou16_Channel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>attempt to access a safety output from non-interfering task </comment>
+            </error>
+            <error index="3">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_reset_error" index="3">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou16_Channel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>attempt to access a safety output from non-interfering task </comment>
+            </error>
+            <error index="3">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_set_value_ramping" index="8">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>ou16_Channel out of range </comment>
+            </error>
+            <error index="1">
+               <code name="C_NOACT" define="-8"/>
+               <comment>function called from ISR handler </comment>
+            </error>
+            <error index="2">
+               <code name="C_CONFIG" define="-10"/>
+               <comment>attempt to access a safety output from non-interfering task </comment>
+            </error>
+            <error index="3">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_relay_get_event_channel" index="25">
+            <error index="0">
+               <code name="C_NOACT" define="-8"/>
+               <comment>no event raised </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights for this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_relay_init" index="20">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_relay_set" index="21">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_out_relay_set_all" index="22">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task </comment>
+            </error>
+         </function>
+         <function name="xs_out_relay_reset_error" index="24">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_ser" description="RS232 Safety Layer" index="105">
+         <function name="xs_ser_init" index="6">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Signal handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ser_close" index="2">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ser_set_bitrate" index="10">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ser_get_status" index="4">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ser_init_rx_buf" index="7">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Signal handle is not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ser_init_tx_buf" index="8">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Signal handle is not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ser_clear_rx_buf" index="0">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ser_clear_tx_buf" index="1">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ser_read" index="9">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ser_write" index="11">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ser_write_string" index="12">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_ssv" description="Supervisor Safety Layer" index="108">
+         <function name="xs_ssv_init" index="0">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ssv_get_status" index="1">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_ssv_set_trigger" index="4">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+      </area>
+      <area name="xs_sys" description="System Safety Layer" index="106">
+         <function name="xs_sys_close" index="0">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_sys_stay_alive" index="13">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_sys_trigger_cpu_watchdog" index="14">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_sys_set_all_relays" index="8">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_sys_set_relay" index="11">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_sys_init_off_reaction" index="21">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>opv_Signal handle not valid </comment>
+            </error>
+            <error index="1">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_sys_set_led" index="10">
+            <error index="0">
+               <code name="C_RANGE" define="-5"/>
+               <comment>any parameter out of range</comment>
+            </error>
+         </function>
+         <function name="xs_sys_set_sensor_supply" index="12">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+         <function name="xs_sys_set_adc_filter" index="7">
+            <error index="0">
+               <code name="C_RD_WR" define="-7"/>
+               <comment>no access rights from this task</comment>
+            </error>
+         </function>
+      </area>
+   </library>
+</errorlist>

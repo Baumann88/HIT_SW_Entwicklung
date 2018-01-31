@@ -1,0 +1,26 @@
+#ifndef _ODCONTENT_H
+#define _ODCONTENT_H
+
+/*====================================================================
+OD Definition
+====================================================================*/
+
+//====================================================================
+//*1 Device Parameter
+#define DevParaStartIndex                    0x1000
+#define NrEntryDevPara                       11
+
+
+//*1.1 Parameter
+#define SubindexHWtype                       0x00//
+#define SubindexSerNr                        0x01//
+#define SubindexNodeParam                    0x02//Byte0: NodeID | Byte1-2: Time of the Heartbeat in ms
+#define SubindexConfigSync12                 0x03//Byte 0 En/Disable Sync1 | Byte 1: Time Window Sync1 | Byte 2 En/Disable Sync2 | Byte 3: Time Window Sync2
+#define SubindexConfigSync34                 0x04//Byte 0 En/Disable Sync3 | Byte 1: Time Window Sync3 | Byte 2 En/Disable Sync4 | Byte 3: Time Window Sync4
+#define SubindexCPUTemperatur                0x05//
+#define SubindexCPUVoltageUb1                0x06//
+#define SubindexCPUCurrentUb1                0x07//
+#define SubindexCPUVoltageExt                0x08//
+#define SubindexCPUVoltageUC1                0x09//
+#define SubindexSysStatus                    0x0a//Bit 0: Ignition On/Off
+#endif

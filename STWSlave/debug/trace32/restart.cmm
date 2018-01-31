@@ -1,0 +1,2 @@
+do .\generic\scripts\start_debug.cmm ..\..\result\Auftrage_DeuscheBahn.elf .\generic .\esx32_specific
+enddo
