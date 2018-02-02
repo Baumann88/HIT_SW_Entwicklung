@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PARAMETERDATA xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="P1DiagParameterDataFile.xsd">
+  <FileFormat Name="001A" Released="true"></FileFormat>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.ActTemp" Value="80"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.DataStructVersion" Value="100"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.PolePairs" Value="2"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.SpeedMax" Value="20000"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,6" ParameterName="Motor.FluxRated" Value="3499"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.CurrentMax" Value="58000"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.TorqueMax" Value="8000"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmRated" Value="20990"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.Llr_Min" Value="1317"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.Llr_Max" Value="1317"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.Lls_Min" Value="1317"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.Lls_Max" Value="1317"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.Lm100" Value="24651"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.Im100" Value="22598"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[0]" Value="0"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[1]" Value="1245"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[2]" Value="2598"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[3]" Value="3523"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[4]" Value="4448"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[5]" Value="5373"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[6]" Value="6299"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[7]" Value="7224"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[8]" Value="8149"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[9]" Value="9075"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[10]" Value="10000"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[11]" Value="10000"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[12]" Value="9447"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[13]" Value="9103"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[14]" Value="8639"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[15]" Value="8231"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[16]" Value="7734"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[17]" Value="7266"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[18]" Value="6814"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.LmTable[19]" Value="6413"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.RrBase" Value="51148"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.TBase_r" Value="20"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.TCoeff_r" Value="4300"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.RsBase" Value="65772"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.TBase_s" Value="20"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.CC_Gain" Value="10000"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="Motor.EncPulses" Value="48"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="MotorControl.SpeedKP" Value="600"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="MotorControl.SpeedKI" Value="0"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="MotorControl.TorqueFF" Value="0"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="MotorControl.UserTorqueLimit" Value="10000"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="MotorControl.UserCurrLimit" Value="10000"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="MotorControl.EncErrThreshold" Value="65535"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="MotorControl.PartLoadReduc" Value="10000"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="MotorControl.DefineDir" Value="0"></PARAMETERITEM>
+  <PARAMETERITEM NodeNr="0,12" ParameterName="MotorControl.ControlMode" Value="0"></PARAMETERITEM>
+</PARAMETERDATA>
